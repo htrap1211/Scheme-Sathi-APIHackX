@@ -1,0 +1,3024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheme Sathi — Government Scheme Matcher</title>
+  <!-- ============================================================
+       SCHEME SATHI — Government Scheme Matcher for Indian Citizens
+       Powered by ASI-1 API (3-Step Chained Prompting Strategy)
+       ============================================================ -->
+  <style>
+    /* ==================== CSS RESET & BASE ==================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --saffron: #FF9933;
+      --saffron-light: #FFF3E0;
+      --saffron-dark: #E65100;
+      --green: #138808;
+      --green-light: #E8F5E9;
+      --navy: #000080;
+      --white: #FFFFFF;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-500: #6B7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --red: #DC2626;
+      --yellow: #F59E0B;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.07);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.13);
+      --shadow-saffron: 0 8px 32px rgba(255,153,51,0.22);
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+      background: #FFFAF5;
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(255,153,51,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(19,136,8,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 60% 30%, rgba(0,0,128,0.03) 0%, transparent 40%);
+      color: var(--gray-900);
+      min-height: 100vh;
+    }
+
+    /* ==================== HEADER ==================== */
+    header {
+      background: linear-gradient(135deg, #FF8C00 0%, #FF5500 55%, #D44000 100%);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(220,80,0,0.35);
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='18'/%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center/60px;
+      pointer-events: none;
+    }
+    .header-brand { display: flex; align-items: center; gap: 12px; position: relative; }
+    .header-logo {
+      width: 44px; height: 44px;
+      background: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+    .header-title { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+    .header-subtitle { font-size: 0.72rem; opacity: 0.85; }
+    .header-actions { display: flex; align-items: center; gap: 8px; position: relative; }
+    .lang-toggle {
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .lang-toggle:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); }
+    .settings-btn {
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: white;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .settings-btn:hover { background: rgba(255,255,255,0.3); transform: rotate(30deg); }
+
+    /* ==================== MAIN CONTAINER ==================== */
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 16px 80px; }
+
+    /* ==================== SCREEN TRANSITIONS ==================== */
+    .screen { display: none; }
+    .screen.active { display: block; animation: fadeUp 0.35s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    /* ==================== FORM SCREEN ==================== */
+    .form-hero {
+      text-align: center;
+      padding: 48px 24px 36px;
+      background: linear-gradient(145deg, #FF8C00 0%, #FF5500 50%, #E63900 100%);
+      border-radius: 24px;
+      box-shadow: 0 16px 48px rgba(220,80,0,0.3);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+    .form-hero::before {
+      content: "☸";
+      position: absolute;
+      right: -20px; top: -20px;
+      font-size: 160px;
+      opacity: 0.06;
+      line-height: 1;
+      color: white;
+      pointer-events: none;
+    }
+    .form-hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 32px;
+      background: #FFFAF5;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .form-hero-icon {
+      font-size: 3.5rem;
+      margin-bottom: 14px;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .form-hero h1 {
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 10px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .form-hero p { color: rgba(255,255,255,0.88); font-size: 0.95rem; line-height: 1.6; max-width: 400px; margin: 0 auto; }
+    .tricolor-bar {
+      height: 5px;
+      background: linear-gradient(to right, white 33%, rgba(255,255,255,0.3) 33%, rgba(255,255,255,0.3) 66%, #4ADE80 66%);
+      border-radius: 3px;
+      margin: 20px auto 0;
+      max-width: 120px;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,153,51,0.1);
+      border-top: 3px solid var(--saffron);
+      transition: box-shadow 0.2s;
+    }
+    .form-card:hover { box-shadow: 0 8px 32px rgba(255,153,51,0.12); }
+    .form-card h2 {
+      font-size: 0.95rem;
+      color: var(--saffron-dark);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--saffron-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .form-grid { display: grid; gap: 14px; }
+    .form-grid-2 { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 480px) { .form-grid-2 { grid-template-columns: 1fr; } }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.82rem; font-weight: 700; color: var(--gray-700); letter-spacing: 0.01em; }
+    .form-group input,
+    .form-group select {
+      padding: 11px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--saffron);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255,153,51,0.12);
+    }
+
+    .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .radio-btn {
+      flex: 1; min-width: 80px;
+      padding: 9px 12px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      transition: all 0.18s;
+      background: var(--gray-50);
+      user-select: none;
+    }
+    .radio-btn input { display: none; }
+    .radio-btn:hover { border-color: var(--saffron); color: var(--saffron-dark); background: var(--saffron-light); }
+    .radio-btn:has(input:checked),
+    .radio-btn.selected {
+      background: linear-gradient(135deg, var(--saffron), #FF6B00);
+      border-color: transparent;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(255,153,51,0.35);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 17px;
+      background: linear-gradient(90deg, #FF8C00, #FF5500, #FF9933, #FF5500, #FF8C00);
+      background-size: 300% auto;
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      animation: shimmer 4s linear infinite;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: var(--shadow-saffron);
+      letter-spacing: 0.01em;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(255,100,0,0.45); }
+    .submit-btn:active { transform: translateY(0); }
+
+    /* ==================== LOADING SCREEN ==================== */
+    .loading-screen {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .loading-logo {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 8px 16px rgba(255,100,0,0.3));
+      animation: floatIcon 2.5s ease-in-out infinite;
+    }
+    .loading-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; letter-spacing: -0.02em; }
+    .loading-subtitle { color: var(--gray-500); margin-bottom: 36px; font-size: 0.9rem; text-align: center; }
+
+    .steps-container { width: 100%; max-width: 400px; }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--gray-200);
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .step-item.active {
+      border-left-color: var(--saffron);
+      background: linear-gradient(135deg, #FFF8EE, #FFF3E0);
+      box-shadow: 0 6px 24px rgba(255,153,51,0.18);
+      transform: translateX(4px);
+    }
+    .step-item.done {
+      border-left-color: var(--green);
+      background: linear-gradient(135deg, #F0FDF4, var(--green-light));
+    }
+    .step-icon {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-icon { background: var(--saffron); box-shadow: 0 4px 12px rgba(255,153,51,0.4); }
+    .step-item.done .step-icon { background: var(--green); box-shadow: 0 4px 12px rgba(19,136,8,0.3); }
+    .step-text { font-size: 0.9rem; color: var(--gray-500); }
+    .step-item.active .step-text { color: var(--saffron-dark); font-weight: 700; }
+    .step-item.done .step-text { color: var(--green); font-weight: 600; }
+
+    /* Tricolor ring spinner */
+    .spinner {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: conic-gradient(var(--saffron) 0deg 120deg, white 120deg 240deg, var(--green) 240deg 360deg);
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+    .spinner::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      background: #FFFAF5;
+      border-radius: 50%;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ==================== RESULTS SCREEN ==================== */
+    .results-header {
+      background: linear-gradient(135deg, #FF8C00 0%, #FF5500 55%, #D44000 100%);
+      color: white;
+      padding: 32px 24px 28px;
+      border-radius: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(220,80,0,0.28);
+    }
+    .results-header::before {
+      content: "🇮🇳";
+      position: absolute;
+      left: -10px; top: -10px;
+      font-size: 100px;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .results-header h2 { font-size: 1.45rem; font-weight: 900; margin-bottom: 4px; letter-spacing: -0.02em; }
+    .results-header p { opacity: 0.88; font-size: 0.875rem; }
+    .results-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    /* Action Plan Card */
+    .action-plan-card {
+      background: linear-gradient(145deg, #FFFBF0 0%, #FFF0D0 50%, #FFE4B0 100%);
+      border: 2px solid rgba(255,153,51,0.4);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(255,153,51,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .action-plan-card::before {
+      content: "⚡";
+      position: absolute;
+      right: 16px; top: 16px;
+      font-size: 3rem;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    .action-plan-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 1.05rem; font-weight: 800;
+      color: var(--saffron-dark);
+      margin-bottom: 14px;
+    }
+    .action-plan-greeting { font-size: 0.95rem; color: var(--gray-700); margin-bottom: 16px; line-height: 1.65; }
+    .top-scheme-badge {
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+      box-shadow: 0 6px 20px rgba(255,100,0,0.3);
+    }
+    .top-scheme-badge strong { display: block; font-size: 1rem; margin-bottom: 4px; font-weight: 800; }
+    .action-steps-list { list-style: none; margin-bottom: 16px; }
+    .action-steps-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+      border-bottom: 1px solid rgba(255,153,51,0.15);
+      line-height: 1.55;
+    }
+    .action-steps-list li:last-child { border-bottom: none; }
+    .step-num {
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(255,100,0,0.3);
+    }
+    .docs-section { margin-bottom: 12px; }
+    .docs-title { font-size: 0.78rem; font-weight: 800; color: var(--gray-700); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .doc-tag {
+      display: inline-block;
+      background: white;
+      border: 1.5px solid rgba(255,153,51,0.4);
+      color: var(--saffron-dark);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      margin: 3px;
+      box-shadow: 0 1px 4px rgba(255,153,51,0.1);
+    }
+    .encouragement {
+      font-size: 0.9rem;
+      color: var(--green);
+      font-weight: 700;
+      text-align: center;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,153,51,0.2);
+    }
+
+    /* Filters */
+    .filter-section { margin-bottom: 16px; }
+    .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+    .filter-scroll::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      white-space: nowrap;
+      padding: 8px 18px;
+      border-radius: 24px;
+      border: 1.5px solid var(--gray-200);
+      background: white;
+      color: var(--gray-600);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .filter-chip:hover { border-color: var(--saffron); color: var(--saffron-dark); }
+    .filter-chip.active {
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      border-color: transparent;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(255,100,0,0.3);
+    }
+
+    /* Scheme Cards */
+    .scheme-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+      border-left: 5px solid var(--gray-200);
+    }
+    .scheme-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px) translateX(2px);
+    }
+    .scheme-card:has(.priority-HIGH) { border-left-color: #F87171; }
+    .scheme-card:has(.priority-MEDIUM) { border-left-color: #FCD34D; }
+    .scheme-card:has(.priority-LOW) { border-left-color: #86EFAC; }
+    .scheme-card-header { padding: 18px 18px 14px; }
+    .scheme-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .scheme-name { font-size: 0.97rem; font-weight: 800; color: var(--gray-900); line-height: 1.3; flex: 1; }
+    .priority-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+    .priority-HIGH { background: #FEF2F2; color: #DC2626; border: 1.5px solid #FCA5A5; }
+    .priority-MEDIUM { background: #FFFBEB; color: #D97706; border: 1.5px solid #FCD34D; }
+    .priority-LOW { background: #F0FDF4; color: #16A34A; border: 1.5px solid #86EFAC; }
+
+    .scheme-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .category-badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: var(--saffron-light);
+      color: var(--saffron-dark);
+    }
+    .eligibility-badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .elig-ELIGIBLE { background: #DCFCE7; color: #16A34A; }
+    .elig-LIKELY_ELIGIBLE { background: #FEF9C3; color: #B45309; }
+    .elig-CHECK_REQUIRED { background: #EDE9FE; color: #7C3AED; }
+
+    .scheme-reason { font-size: 0.84rem; color: var(--gray-500); line-height: 1.55; }
+    .scheme-benefit {
+      background: linear-gradient(135deg, #F0FDF4, var(--green-light));
+      border-left: 3px solid var(--green);
+      padding: 10px 14px;
+      margin: 12px 0 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.82rem;
+      color: #15803D;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .expand-btn {
+      width: 100%;
+      padding: 12px 18px;
+      background: var(--gray-50);
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      color: var(--saffron-dark);
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .expand-btn:hover { background: var(--saffron-light); }
+    .expand-chevron { transition: transform 0.25s; margin-left: auto; }
+    .expand-btn.expanded .expand-chevron { transform: rotate(180deg); }
+
+    .scheme-details {
+      display: none;
+      padding: 16px 18px;
+      border-top: 1px solid var(--gray-100);
+      background: linear-gradient(135deg, #FAFAFA, #FFF8F0);
+    }
+    .scheme-details.open { display: block; }
+    .how-to-apply { font-size: 0.85rem; color: var(--gray-700); line-height: 1.65; margin-bottom: 14px; }
+    .apply-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--green), #0D6E05);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(19,136,8,0.3);
+    }
+    .apply-link:hover { background: linear-gradient(135deg, #0D6E05, #0a5504); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(19,136,8,0.4); }
+
+    /* Action buttons group */
+    .action-btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .share-btn {
+      width: 100%;
+      padding: 14px;
+      background: white;
+      border: 2px solid var(--saffron);
+      color: var(--saffron-dark);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .share-btn:hover { background: var(--saffron); color: white; box-shadow: var(--shadow-saffron); transform: translateY(-1px); }
+
+    /* Download Checklist button */
+    .checklist-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #1a1a8c, var(--navy));
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(0,0,128,0.25);
+    }
+    .checklist-btn:hover { background: linear-gradient(135deg, #2020cc, #0000aa); transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,0,128,0.35); }
+    .checklist-btn:disabled { background: var(--gray-300); box-shadow: none; cursor: not-allowed; transform: none; }
+
+    /* ==================== MODAL ==================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeUp 0.25s ease; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+      border-top: 4px solid var(--saffron);
+    }
+    .modal h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+    .modal p { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 20px; line-height: 1.55; }
+    .modal-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+      font-family: monospace;
+      background: var(--gray-50);
+    }
+    .modal-input:focus { outline: none; border-color: var(--saffron); background: white; box-shadow: 0 0 0 4px rgba(255,153,51,0.12); }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-primary {
+      flex: 1; padding: 11px;
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255,100,0,0.3);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,100,0,0.4); }
+    .btn-secondary {
+      padding: 11px 16px;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: var(--gray-200); }
+
+    /* ==================== ALERT BANNER ==================== */
+    .alert {
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .alert-error { background: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; border-left: 4px solid #DC2626; }
+    .alert-warning { background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; border-left: 4px solid #F59E0B; }
+    .retry-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .retry-btn:hover { background: #B91C1C; transform: translateY(-1px); }
+
+    /* ==================== FOOTER ==================== */
+    footer {
+      text-align: center;
+      padding: 28px 20px;
+      color: var(--gray-400);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--gray-100);
+      margin-top: 20px;
+    }
+    .asi-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+      box-shadow: var(--shadow);
+      font-weight: 600;
+    }
+    .asi-dot { width: 8px; height: 8px; background: var(--saffron); border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
+
+    /* ==================== UTILITY ==================== */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .mt-8 { margin-top: 8px; }
+    .no-results { text-align: center; padding: 40px 20px; color: var(--gray-500); }
+    .confidence-bar {
+      height: 5px;
+      background: var(--gray-100);
+      border-radius: 3px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .confidence-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--saffron), #FF5500, var(--green));
+      border-radius: 3px;
+      transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ==================== IMPACT COUNTER ==================== */
+    .impact-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.22);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .counter-dot {
+      width: 8px; height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    /* ==================== DEMO PERSONAS ==================== */
+    .personas-section { margin-bottom: 24px; }
+    .personas-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .persona-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .persona-cards { grid-template-columns: 1fr; } }
+    .persona-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 18px 12px 14px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .persona-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--saffron-light), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .persona-card:hover {
+      border-color: var(--saffron);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(255,153,51,0.2);
+    }
+    .persona-card:hover::before { opacity: 1; }
+    .persona-avatar {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      display: block;
+      position: relative;
+    }
+    .persona-name { font-size: 0.92rem; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; position: relative; }
+    .persona-desc { font-size: 0.71rem; color: var(--gray-500); line-height: 1.4; position: relative; }
+    .persona-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--saffron-light), #FFE8CC);
+      color: var(--saffron-dark);
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      margin-top: 8px;
+      position: relative;
+    }
+
+    /* ==================== WHATSAPP BUTTON ==================== */
+    .whatsapp-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(37,211,102,0.3);
+    }
+    .whatsapp-btn:hover { background: linear-gradient(135deg, #1fba58, #0e7a6e); transform: translateY(-1px); box-shadow: 0 10px 28px rgba(37,211,102,0.4); }
+
+    /* ==================== CHAT WINDOW ==================== */
+    .chat-section {
+      margin-top: 24px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,128,0.1);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,128,0.08);
+    }
+    .chat-header {
+      background: linear-gradient(135deg, #1a1a8c 0%, var(--navy) 60%, #000066 100%);
+      color: white;
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .chat-header::after {
+      content: "💬";
+      position: absolute;
+      right: 16px;
+      font-size: 2.5rem;
+      opacity: 0.1;
+    }
+    .chat-header-dot {
+      width: 10px; height: 10px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #4ade80;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: linear-gradient(180deg, #F8F9FF 0%, #F4F5FF 100%);
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+    .chat-bubble {
+      max-width: 84%;
+      padding: 11px 15px;
+      border-radius: 16px;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      animation: fadeUp 0.2s ease;
+    }
+    .chat-bubble.user {
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(255,100,0,0.25);
+    }
+    .chat-bubble.assistant {
+      background: white;
+      color: var(--gray-900);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,128,0.08);
+      border: 1px solid rgba(0,0,128,0.06);
+    }
+    .chat-bubble.thinking {
+      background: white;
+      color: var(--gray-400);
+      align-self: flex-start;
+      font-style: italic;
+      font-size: 0.82rem;
+      border: 1px dashed var(--gray-200);
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(0,0,128,0.07);
+      background: white;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      font-size: 0.875rem;
+      outline: none;
+      transition: all 0.2s;
+      background: var(--gray-50);
+    }
+    .chat-input:focus { border-color: var(--navy); background: white; box-shadow: 0 0 0 3px rgba(0,0,128,0.08); }
+    .chat-send-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #1a1a8c, var(--navy));
+      color: white;
+      border: none;
+      border-radius: 24px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,128,0.25);
+    }
+    .chat-send-btn:hover { background: linear-gradient(135deg, #2020cc, #0000aa); transform: translateY(-1px); }
+    .chat-send-btn:disabled { background: var(--gray-300); box-shadow: none; cursor: not-allowed; transform: none; }
+    .chat-suggested {
+      padding: 10px 14px 0;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      background: white;
+      border-top: 1px solid rgba(0,0,128,0.06);
+    }
+    .chat-suggestion-chip {
+      padding: 6px 13px;
+      border: 1.5px solid rgba(0,0,128,0.15);
+      border-radius: 16px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      background: rgba(0,0,128,0.03);
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .chat-suggestion-chip:hover { border-color: var(--navy); background: rgba(0,0,128,0.08); transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="header-brand">
+    <div class="header-logo">🇮🇳</div>
+    <div>
+      <div class="header-title" id="header-title">Scheme Sathi</div>
+      <div class="header-subtitle" id="header-subtitle">Find government benefits you deserve</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-btn">हिंदी</button>
+    <button class="settings-btn" onclick="openSettings()" title="API Settings">⚙️</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     SETTINGS MODAL (API Key entry — stored in JS variable)
+     ============================================================ -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h3>⚙️ API Settings</h3>
+    <p id="modal-desc">Enter your ASI-1 API key to enable AI-powered scheme matching. Your key is stored only in memory and never sent anywhere except the ASI-1 API.</p>
+    <input type="password" class="modal-input" id="api-key-input" placeholder="asi1-xxxxxxxxxxxxxxxxxxxx" />
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+      <button class="btn-primary" onclick="saveApiKey()" id="save-key-btn">Save Key</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="container">
+
+  <!-- ========== SCREEN 1: PROFILE FORM ========== -->
+  <div class="screen active" id="screen-form">
+
+    <div class="form-hero">
+      <div class="form-hero-icon">🏛️</div>
+      <h1 id="hero-title">Find Your Schemes</h1>
+      <p id="hero-desc">Answer a few questions and our AI will match you with government schemes you qualify for — in seconds.</p>
+      <div>
+        <div class="impact-counter">
+          <div class="counter-dot"></div>
+          <span id="impact-counter-text">Join 127 Indians who found their benefits</span>
+        </div>
+      </div>
+      <div class="tricolor-bar"></div>
+    </div>
+
+    <div id="api-warning" class="alert alert-warning hidden">
+      ⚠️ <span id="api-warning-text">No API key found. Please add your ASI-1 API key using the ⚙️ button above to use this app.</span>
+    </div>
+
+    <!-- Demo Personas -->
+    <div class="personas-section">
+      <div class="personas-label" id="try-demo-label">✨ Try a Demo — Click to auto-fill form</div>
+      <div class="persona-cards">
+        <div class="persona-card" onclick="fillPersona('ramu')">
+          <div class="persona-avatar">👨‍🌾</div>
+          <div class="persona-name">Ramu</div>
+          <div class="persona-desc">45 yrs · Farmer · Bihar · BPL</div>
+          <div class="persona-tag">SC · ₹4,000/mo</div>
+        </div>
+        <div class="persona-card" onclick="fillPersona('sunita')">
+          <div class="persona-avatar">👩</div>
+          <div class="persona-name">Sunita</div>
+          <div class="persona-desc">32 yrs · Widow · MP · 2 children</div>
+          <div class="persona-tag">OBC · Unemployed</div>
+        </div>
+        <div class="persona-card" onclick="fillPersona('arjun')">
+          <div class="persona-avatar">👨‍🎓</div>
+          <div class="persona-name">Arjun</div>
+          <div class="persona-desc">19 yrs · Student · Tamil Nadu</div>
+          <div class="persona-tag">OBC · ₹18,000/mo</div>
+        </div>
+      </div>
+    </div>
+
+    <form id="profile-form" onsubmit="handleFormSubmit(event)">
+
+      <!-- Personal Info -->
+      <div class="form-card">
+        <h2>👤 <span class="t" data-key="personal">Personal Information</span></h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="t" data-key="fullName">Full Name</label>
+            <input type="text" id="f-name" placeholder="Enter your full name" required />
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label class="t" data-key="age">Age</label>
+              <input type="number" id="f-age" min="1" max="120" placeholder="25" required />
+            </div>
+            <div class="form-group">
+              <label class="t" data-key="gender">Gender</label>
+              <select id="f-gender" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="state">State</label>
+            <select id="f-state" required>
+              <option value="">Select your state</option>
+              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+              <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+              <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+              <option>Himachal Pradesh</option><option>Jharkhand</option>
+              <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option>
+              <option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+              <option>Mizoram</option><option>Nagaland</option><option>Odisha</option>
+              <option>Punjab</option><option>Rajasthan</option><option>Sikkim</option>
+              <option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option>
+              <option>Uttar Pradesh</option><option>Uttarakhand</option>
+              <option>West Bengal</option><option>Andaman and Nicobar Islands</option>
+              <option>Chandigarh</option><option>Dadra and Nagar Haveli</option>
+              <option>Daman and Diu</option><option>Delhi</option><option>Lakshadweep</option>
+              <option>Puducherry</option><option>Ladakh</option><option>Jammu and Kashmir</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="maritalStatus">Marital Status</label>
+            <select id="f-marital">
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="children">Number of Children</label>
+            <select id="f-children">
+              <option value="0">0</option><option value="1">1</option>
+              <option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Economic Info -->
+      <div class="form-card">
+        <h2>💰 <span class="t" data-key="economic">Economic Details</span></h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="t" data-key="income">Monthly Household Income (₹)</label>
+            <input type="number" id="f-income" min="0" placeholder="e.g. 15000" required />
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="occupation">Occupation</label>
+            <select id="f-occupation" required>
+              <option value="">Select occupation</option>
+              <option value="Farmer">Farmer</option>
+              <option value="Student">Student</option>
+              <option value="Unemployed">Unemployed</option>
+              <option value="Salaried">Salaried Employee</option>
+              <option value="Self-employed">Self-employed</option>
+              <option value="Daily wage worker">Daily Wage Worker</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="caste">Caste Category</label>
+            <div class="radio-group" id="caste-group">
+              <label class="radio-btn"><input type="radio" name="caste" value="General" onchange="syncRadio('caste-group')" /> General</label>
+              <label class="radio-btn"><input type="radio" name="caste" value="OBC" onchange="syncRadio('caste-group')" /> OBC</label>
+              <label class="radio-btn"><input type="radio" name="caste" value="SC" onchange="syncRadio('caste-group')" /> SC</label>
+              <label class="radio-btn"><input type="radio" name="caste" value="ST" onchange="syncRadio('caste-group')" /> ST</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="bpl">Do you have a BPL card?</label>
+            <div class="radio-group" id="bpl-group">
+              <label class="radio-btn"><input type="radio" name="bpl" value="Yes" onchange="syncRadio('bpl-group')" /> Yes</label>
+              <label class="radio-btn"><input type="radio" name="bpl" value="No" onchange="syncRadio('bpl-group')" /> No</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="t" data-key="land">Do you own agricultural land?</label>
+            <div class="radio-group" id="land-group">
+              <label class="radio-btn"><input type="radio" name="land" value="Yes" onchange="syncRadio('land-group')" /> Yes</label>
+              <label class="radio-btn"><input type="radio" name="land" value="No" onchange="syncRadio('land-group')" /> No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language Preference -->
+      <div class="form-card">
+        <h2>🌐 <span class="t" data-key="language">Language Preference</span></h2>
+        <div class="form-group">
+          <div class="radio-group" id="lang-pref-group">
+            <label class="radio-btn"><input type="radio" name="lang-pref" value="English" checked onchange="syncRadio('lang-pref-group')" /> English</label>
+            <label class="radio-btn"><input type="radio" name="lang-pref" value="Hindi" onchange="syncRadio('lang-pref-group')" /> हिंदी</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <span id="submit-text">Find My Schemes →</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ========== SCREEN 2: LOADING ========== -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <div class="loading-logo">🏛️</div>
+      <div class="spinner"></div>
+      <div class="loading-title" id="loading-title">Analyzing your profile...</div>
+      <div class="loading-subtitle" id="loading-subtitle">Our AI is working to find the best schemes for you</div>
+
+      <div class="steps-container">
+        <div class="step-item" id="step-1">
+          <div class="step-icon">🔍</div>
+          <div class="step-text" id="step-1-text">Analyzing your profile...</div>
+        </div>
+        <div class="step-item" id="step-2">
+          <div class="step-icon">📋</div>
+          <div class="step-text" id="step-2-text">Matching 40+ schemes...</div>
+        </div>
+        <div class="step-item" id="step-3">
+          <div class="step-icon">📝</div>
+          <div class="step-text" id="step-3-text">Creating your action plan...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 3: RESULTS ========== -->
+  <div class="screen" id="screen-results">
+    <div class="results-header">
+      <h2 id="results-name">Your Matched Schemes</h2>
+      <p id="results-subtitle">Based on your profile, here are the schemes you qualify for</p>
+      <div class="results-badge" id="results-count-badge">Loading...</div>
+    </div>
+
+    <div id="action-plan-container"></div>
+
+    <div class="filter-section">
+      <div class="filter-scroll" id="filter-chips"></div>
+    </div>
+
+    <div id="alert-container"></div>
+    <div id="scheme-cards-container"></div>
+
+    <div class="action-btn-group">
+    <button class="share-btn" onclick="shareResults()">
+      📤 <span class="t" data-key="share">Share Results</span>
+    </button>
+
+    <button class="whatsapp-btn" onclick="shareWhatsApp()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span class="t" data-key="shareWhatsApp">Share on WhatsApp</span>
+    </button>
+
+    <button class="checklist-btn" id="checklist-btn" onclick="downloadChecklist()">
+      📋 <span id="checklist-btn-text">Download My Document Checklist</span>
+    </button>
+
+    <button class="submit-btn" style="background: white; color: var(--saffron-dark); border: 2px solid var(--saffron); box-shadow: none; animation: none;" onclick="goBack()">
+      ← <span class="t" data-key="newSearch">Start New Search</span>
+    </button>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-section" id="chat-section">
+      <div class="chat-header">
+        <div class="chat-header-dot"></div>
+        <span id="chat-header-text">Ask About Your Schemes</span>
+      </div>
+      <div class="chat-suggested" id="chat-suggestions">
+        <button class="chat-suggestion-chip" onclick="useSuggestion(this)">How do I apply for the top scheme?</button>
+        <button class="chat-suggestion-chip" onclick="useSuggestion(this)">What documents do I need?</button>
+        <button class="chat-suggestion-chip" onclick="useSuggestion(this)">Which scheme gives the most money?</button>
+        <button class="chat-suggestion-chip" onclick="useSuggestion(this)">Am I eligible for Ayushman Bharat?</button>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text"
+          placeholder="Ask anything about your matched schemes..."
+          onkeydown="if(event.key==='Enter' && !event.shiftKey) sendChatMessage()" />
+        <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">
+          <span id="chat-send-text">Send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="asi-badge">
+    <div class="asi-dot"></div>
+    Powered by ASI-1 Mini
+  </div>
+  <div>Scheme Sathi &copy; 2026 — Hackathon Project</div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT — SCHEMES DATA, TRANSLATIONS, API LOGIC, UI
+     ============================================================ -->
+<script>
+/* ============================================================
+   SECTION 1: SCHEMES DATA — 40 Real Indian Government Schemes
+   ============================================================ */
+const SCHEMES = [
+  // ---- AGRICULTURE (8 schemes) ----
+  {
+    id: "PM-KISAN",
+    name: "PM Kisan Samman Nidhi (PM-KISAN)",
+    category: "Agriculture",
+    description: "Income support of ₹6,000 per year in three equal installments to small and marginal farmer families.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Register at pmkisan.gov.in or visit local agriculture office / Common Service Centre (CSC). Aadhaar-linked bank account required.",
+    official_link: "https://pmkisan.gov.in"
+  },
+  {
+    id: "KCC",
+    name: "Kisan Credit Card (KCC)",
+    category: "Agriculture",
+    description: "Provides farmers with timely and adequate credit for agricultural needs at concessional interest rates (4% effective rate).",
+    eligibility: { min_age: 18, max_age: 75, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Apply at any nationalized bank, cooperative bank, or regional rural bank. Submit land documents, identity proof, and passport-size photograph.",
+    official_link: "https://www.nabard.org/auth/writereaddata/tender/1806180417KCC%20Scheme.pdf"
+  },
+  {
+    id: "PMFBY",
+    name: "PM Fasal Bima Yojana (PMFBY)",
+    category: "Agriculture",
+    description: "Crop insurance scheme providing financial support to farmers suffering crop loss/damage due to unforeseen events.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Apply through the PMFBY portal (pmfby.gov.in), CSC, banks, or empanelled insurance companies during the crop season.",
+    official_link: "https://pmfby.gov.in"
+  },
+  {
+    id: "PMKSY",
+    name: "PM Krishi Sinchai Yojana (PMKSY)",
+    category: "Agriculture",
+    description: "Ensures access to protective irrigation to all agricultural farms with the motto 'Har Khet Ko Pani, More Crop Per Drop'.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Apply through state agriculture department or District Agriculture Officer (DAO). Subsidy available for drip/sprinkler irrigation.",
+    official_link: "https://pmksy.gov.in"
+  },
+  {
+    id: "e-NAM",
+    name: "e-National Agriculture Market (e-NAM)",
+    category: "Agriculture",
+    description: "Online trading platform for agricultural commodities allowing farmers to get better prices.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Register at enam.gov.in or at the local APMC (Agriculture Produce Market Committee). Aadhaar and bank account required.",
+    official_link: "https://enam.gov.in"
+  },
+  {
+    id: "SMAM",
+    name: "Sub Mission on Agriculture Mechanization (SMAM)",
+    category: "Agriculture",
+    description: "Provides subsidy (40-50% for general, 50-80% for SC/ST/small farmers) on purchase of farm machinery and equipment.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Apply at agrimachinery.nic.in portal or state agriculture department. Upload land records and identity documents.",
+    official_link: "https://agrimachinery.nic.in"
+  },
+  {
+    id: "PMKMY",
+    name: "PM Kisan Maandhan Yojana",
+    category: "Agriculture",
+    description: "Pension scheme providing ₹3,000/month to small and marginal farmers after age 60.",
+    eligibility: { min_age: 18, max_age: 40, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
+    how_to_apply: "Enroll at maandhan.in or nearest Common Service Centre (CSC). Contribute ₹55-200/month based on entry age.",
+    official_link: "https://maandhan.in"
+  },
+  {
+    id: "ATMA",
+    name: "Agricultural Technology Management Agency (ATMA)",
+    category: "Agriculture",
+    description: "Provides training, demonstrations, and technology transfer to farmers to improve agricultural productivity.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Contact local Block Technology Team (BTT) or District Agricultural Office for registration and training programs.",
+    official_link: "https://agricoop.nic.in"
+  },
+
+  // ---- WOMEN & CHILDREN (7 schemes) ----
+  {
+    id: "BBBP",
+    name: "Beti Bachao Beti Padhao (BBBP)",
+    category: "Women & Children",
+    description: "Addresses declining Child Sex Ratio (CSR) and promotes welfare and education of the girl child.",
+    eligibility: { min_age: 0, max_age: 10, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "No direct application — benefits through Anganwadi centers, schools, and health facilities. Apply for Sukanya Samriddhi at post office/bank.",
+    official_link: "https://wcd.nic.in/bbbp-schemes"
+  },
+  {
+    id: "SSY",
+    name: "Sukanya Samriddhi Yojana (SSY)",
+    category: "Women & Children",
+    description: "Small deposit savings scheme for girl child with attractive interest rate (~8.2% p.a.) and tax benefits.",
+    eligibility: { min_age: 0, max_age: 10, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Open account at post office or authorized bank with girl's birth certificate, parent's Aadhaar/PAN, and minimum ₹250 deposit.",
+    official_link: "https://www.nsiindia.gov.in"
+  },
+  {
+    id: "JSY",
+    name: "Janani Suraksha Yojana (JSY)",
+    category: "Women & Children",
+    description: "Cash assistance to pregnant women for institutional delivery — ₹1,400 (rural) and ₹1,000 (urban) in LPS states.",
+    eligibility: { min_age: 18, max_age: 45, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
+    how_to_apply: "Register at nearest government health facility (PHC/CHC/hospital). ASHA worker will assist with registration.",
+    official_link: "https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=309"
+  },
+  {
+    id: "PMMVY",
+    name: "PM Matru Vandana Yojana (PMMVY)",
+    category: "Women & Children",
+    description: "Maternity benefit of ₹5,000 for the first live birth to compensate wage loss and improve nutrition of pregnant/lactating mothers.",
+    eligibility: { min_age: 18, max_age: 45, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Register at Anganwadi center or approved health facility within 150 days of pregnancy. Three installments via direct bank transfer.",
+    official_link: "https://pmmvy.nic.in"
+  },
+  {
+    id: "ICDS",
+    name: "Integrated Child Development Services (ICDS)",
+    category: "Women & Children",
+    description: "Provides supplementary nutrition, health checkups, immunization, and pre-school education for children 0-6 years.",
+    eligibility: { min_age: 0, max_age: 6, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Enroll at nearest Anganwadi center. No formal application required — walk-in registration at your local Anganwadi.",
+    official_link: "https://wcd.nic.in"
+  },
+  {
+    id: "NP-NSAF",
+    name: "National Creche Scheme",
+    category: "Women & Children",
+    description: "Day care support for children (6 months to 6 years) of working mothers with supplementary nutrition and early stimulation.",
+    eligibility: { min_age: 0, max_age: 6, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 24000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at Women and Child Development Department or NGOs running government-funded creches in your area.",
+    official_link: "https://wcd.nic.in"
+  },
+  {
+    id: "KSY-Women",
+    name: "Mahila Shakti Kendra Scheme",
+    category: "Women & Children",
+    description: "Empowers rural women through community engagement, skill development, employment, digital literacy, and health.",
+    eligibility: { min_age: 18, max_age: 60, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Contact Anganwadi worker, Block Resource Centre, or District Women and Child Development Officer.",
+    official_link: "https://wcd.nic.in"
+  },
+
+  // ---- EDUCATION (6 schemes) ----
+  {
+    id: "NSP",
+    name: "National Scholarship Portal (NSP)",
+    category: "Education",
+    description: "Single-window portal for pre-matric, post-matric, and merit scholarships for SC, ST, OBC, Minority, and economically weaker students.",
+    eligibility: { min_age: 3, max_age: 30, gender: "All", caste: ["OBC","SC","ST"], occupation: ["Student"], max_income: 250000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Register at scholarships.gov.in during application window (usually July–October). Upload income certificate, caste certificate, marksheets, bank details.",
+    official_link: "https://scholarships.gov.in"
+  },
+  {
+    id: "PMSS",
+    name: "PM Scholarship Scheme for Central Armed Police Forces",
+    category: "Education",
+    description: "Scholarships of ₹2,500/month (boys) and ₹3,000/month (girls) for wards of deceased/disabled ex-servicemen.",
+    eligibility: { min_age: 18, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at ksb.gov.in. Documents: Ex-serviceman certificate, marksheets, fee receipts, bank account.",
+    official_link: "https://ksb.gov.in"
+  },
+  {
+    id: "SB-MHRD",
+    name: "Samagra Shiksha Abhiyan",
+    category: "Education",
+    description: "Integrated scheme for school education from pre-school to class XII covering access, equity, and quality improvements.",
+    eligibility: { min_age: 3, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Benefits flow through schools automatically. Enroll children in government schools to access textbooks, uniforms, midday meals, and digital labs.",
+    official_link: "https://samagrashiksha.in"
+  },
+  {
+    id: "RTE",
+    name: "Right to Education (RTE) — Free Admission",
+    category: "Education",
+    description: "25% free seats in private schools for economically weaker sections (EWS) children from class 1 to 8.",
+    eligibility: { min_age: 6, max_age: 14, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 100000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply through state RTE portal or District Education Office during admission window (usually March-April). Income certificate required.",
+    official_link: "https://mhrd.gov.in/rte"
+  },
+  {
+    id: "PMSSS",
+    name: "PM Special Scholarship Scheme (NE Students)",
+    category: "Education",
+    description: "Scholarships for students from North-East states pursuing professional courses in institutions outside their home state.",
+    eligibility: { min_age: 17, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 600000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply through AICTE portal. Students from Assam, Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura are eligible.",
+    official_link: "https://www.aicte-india.org"
+  },
+  {
+    id: "NMMSS",
+    name: "National Means-cum-Merit Scholarship Scheme (NMMSS)",
+    category: "Education",
+    description: "₹12,000 per year scholarship for meritorious students from economically weaker sections to prevent dropout after class 8.",
+    eligibility: { min_age: 13, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 150000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Appear for state-level NMMSS examination. Applications through school principal or State Examination Board.",
+    official_link: "https://scholarships.gov.in"
+  },
+
+  // ---- HEALTH (6 schemes) ----
+  {
+    id: "PMJAY",
+    name: "Ayushman Bharat PM Jan Arogya Yojana (PMJAY)",
+    category: "Health",
+    description: "Health coverage of ₹5 lakh per family per year for secondary and tertiary hospitalization across empanelled hospitals.",
+    eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
+    how_to_apply: "Check eligibility at mera.pmjay.gov.in using Aadhaar/ration card. Get Golden Card from Ayushman Mitra at government hospitals or CSC.",
+    official_link: "https://pmjay.gov.in"
+  },
+  {
+    id: "PMSBY",
+    name: "PM Suraksha Bima Yojana (PMSBY)",
+    category: "Health",
+    description: "Accidental insurance cover of ₹2 lakh for death/total disability at just ₹20/year premium.",
+    eligibility: { min_age: 18, max_age: 70, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Enroll through your bank account (auto-debit ₹20 annually). Visit bank branch or bank's internet banking/mobile app.",
+    official_link: "https://jansuraksha.gov.in"
+  },
+  {
+    id: "PMJJBY",
+    name: "PM Jeevan Jyoti Bima Yojana (PMJJBY)",
+    category: "Health",
+    description: "Life insurance cover of ₹2 lakh for death due to any reason at ₹436/year premium.",
+    eligibility: { min_age: 18, max_age: 50, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Enroll via bank branch or online banking. Annual auto-debit of ₹436 from savings account linked to Aadhaar.",
+    official_link: "https://jansuraksha.gov.in"
+  },
+  {
+    id: "JSSK",
+    name: "Janani Shishu Suraksha Karyakaram (JSSK)",
+    category: "Health",
+    description: "Free delivery including C-section, free drugs, diagnostics, diet, blood, and transport for pregnant women at government facilities.",
+    eligibility: { min_age: 15, max_age: 49, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Visit nearest government health facility (PHC/CHC/District Hospital). ASHA worker can accompany for delivery support.",
+    official_link: "https://nhm.gov.in"
+  },
+  {
+    id: "RBSK",
+    name: "Rashtriya Bal Swasthya Karyakaram (RBSK)",
+    category: "Health",
+    description: "Child health screening and early intervention services for children from birth to 18 years covering 4D — Defects, Diseases, Deficiencies, Development delays.",
+    eligibility: { min_age: 0, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Screening conducted at schools and Anganwadi centers. DEIC (District Early Intervention Centre) provides follow-up treatment.",
+    official_link: "https://nhm.gov.in/rbsk"
+  },
+  {
+    id: "PMNDP",
+    name: "National Mental Health Programme (NMHP)",
+    category: "Health",
+    description: "Free mental health services including counseling, treatment, and rehabilitation through District Mental Health Programme.",
+    eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Visit nearest District Hospital mental health OPD. Call national helpline iCall: 9152987821. Tele-MANAS: 14416.",
+    official_link: "https://nhm.gov.in/nmhp"
+  },
+
+  // ---- EMPLOYMENT & BUSINESS (7 schemes) ----
+  {
+    id: "MGNREGA",
+    name: "Mahatma Gandhi NREGA (MGNREGA)",
+    category: "Employment",
+    description: "Guarantees 100 days of wage employment per year to rural households at minimum wage (₹230-374/day depending on state).",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer","Unemployed","Daily wage worker"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply for job card at Gram Panchayat office. Once registered, demand work at the Panchayat. Payment within 15 days.",
+    official_link: "https://nrega.nic.in"
+  },
+  {
+    id: "MUDRA",
+    name: "PM Mudra Yojana (PMMY)",
+    category: "Employment",
+    description: "Collateral-free loans up to ₹10 lakh for small businesses: Shishu (₹50K), Kishor (₹5L), Tarun (₹10L).",
+    eligibility: { min_age: 18, max_age: 65, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at any bank, MFI, or mudra.org.in. Submit business plan, identity proof, address proof, and photographs.",
+    official_link: "https://www.mudra.org.in"
+  },
+  {
+    id: "STARTUP-INDIA",
+    name: "Startup India",
+    category: "Employment",
+    description: "Tax exemptions, funding support, and simplified regulations for DPIIT-recognized startups. 3-year income tax exemption.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Salaried"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Register at startupindia.gov.in. Company/LLP must be less than 10 years old with annual turnover under ₹100 crore.",
+    official_link: "https://startupindia.gov.in"
+  },
+  {
+    id: "PMEGP",
+    name: "PM Employment Generation Programme (PMEGP)",
+    category: "Employment",
+    description: "Subsidy of 15-35% on project cost up to ₹50 lakh (manufacturing) for starting new micro enterprises.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at kviconline.gov.in (KVIC) or state KVIBs/DICs. Minimum VIII pass required for projects above ₹10 lakh.",
+    official_link: "https://kviconline.gov.in/pmegpeportal"
+  },
+  {
+    id: "NAPS",
+    name: "National Apprenticeship Promotion Scheme (NAPS)",
+    category: "Employment",
+    description: "Government reimburses 25% of prescribed stipend (max ₹1,500/month) to employers training apprentices to boost skilled employment.",
+    eligibility: { min_age: 14, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Register at apprenticeshipindia.org and apply for available apprenticeship openings near your location.",
+    official_link: "https://apprenticeshipindia.org"
+  },
+  {
+    id: "PMKVY",
+    name: "PM Kaushal Vikas Yojana (PMKVY)",
+    category: "Employment",
+    description: "Free short-term skill training (3–6 months) in industry-relevant skills with certification and placement support.",
+    eligibility: { min_age: 15, max_age: 45, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Unemployed","Student","Daily wage worker"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Find nearest PMKVY training center at skillindia.gov.in or PMKVY portal. Enroll with Aadhaar for free training.",
+    official_link: "https://www.pmkvyofficial.org"
+  },
+  {
+    id: "DAY-NULM",
+    name: "Deendayal Antyodaya Yojana — NULM",
+    category: "Employment",
+    description: "Supports urban poor through self-employment, wage employment, and skill training with subsidized credit linkage.",
+    eligibility: { min_age: 18, max_age: 60, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Unemployed","Daily wage worker","Self-employed"], max_income: 50000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at City Livelihood Centre (CLC) or Urban Local Body (Municipal Corporation). Form Self Help Groups through NULM.",
+    official_link: "https://nulm.gov.in"
+  },
+
+  // ---- HOUSING (4 schemes) ----
+  {
+    id: "PMAY-U",
+    name: "PM Awas Yojana — Urban (PMAY-U)",
+    category: "Housing",
+    description: "Interest subsidy of 3–6.5% on home loans under Credit Linked Subsidy Scheme (CLSS) for EWS/LIG/MIG categories.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 1800000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply at pmaymis.gov.in or through bank/HFC. Beneficiary must not own a pucca house. Aadhaar mandatory.",
+    official_link: "https://pmaymis.gov.in"
+  },
+  {
+    id: "PMAY-G",
+    name: "PM Awas Yojana — Gramin (PMAY-G)",
+    category: "Housing",
+    description: "Financial assistance of ₹1.20 lakh (plain areas) / ₹1.30 lakh (hilly/NE) for construction of pucca houses to homeless rural poor.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
+    how_to_apply: "Selection based on SECC 2011 data. Verify name on awaassoft.nic.in. Contact Gram Panchayat or Block Development Officer.",
+    official_link: "https://pmayg.nic.in"
+  },
+  {
+    id: "RERA",
+    name: "RERA — Real Estate Regulatory Authority",
+    category: "Housing",
+    description: "Protects home buyers from developer fraud with mandatory project registration, timely delivery, and dispute resolution.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "File complaint at state RERA portal (e.g., maharera.mahaonline.gov.in) if builder delays or violates norms. No fee for complaint.",
+    official_link: "https://rera.gov.in"
+  },
+  {
+    id: "NSSF-Housing",
+    name: "Interest Subsidy Scheme for Housing the Urban Poor (ISHUP)",
+    category: "Housing",
+    description: "5% interest subsidy on home loans up to ₹1 lakh for EWS/LIG urban poor for construction/enhancement of dwelling units.",
+    eligibility: { min_age: 18, max_age: 65, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 100000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply through scheduled banks, housing finance companies, or MFIs. Land ownership or allotment letter from ULB required.",
+    official_link: "https://mohua.gov.in"
+  },
+
+  // ---- SENIOR CITIZENS & DISABILITY (5 schemes) ----
+  {
+    id: "IGNOAPS",
+    name: "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    category: "Senior Citizens",
+    description: "Monthly pension of ₹200 (60-79 years) and ₹500 (80+ years) for BPL senior citizens.",
+    eligibility: { min_age: 60, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
+    how_to_apply: "Apply at Gram Panchayat (rural) or urban local body office. Submit age proof (Aadhaar/birth certificate), BPL card, bank passbook.",
+    official_link: "https://nsap.nic.in"
+  },
+  {
+    id: "IGNWPS",
+    name: "Indira Gandhi National Widow Pension Scheme (IGNWPS)",
+    category: "Senior Citizens",
+    description: "Monthly pension of ₹300 for BPL widows aged 40-79 years.",
+    eligibility: { min_age: 40, max_age: 79, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
+    how_to_apply: "Apply at Gram Panchayat or Block Development Office with death certificate of husband, BPL card, age proof, and bank account.",
+    official_link: "https://nsap.nic.in"
+  },
+  {
+    id: "ADIP",
+    name: "Assistance to Disabled Persons (ADIP) Scheme",
+    category: "Senior Citizens",
+    description: "Free assistive devices (wheelchair, hearing aids, caliper, braille kits) for persons with disability with income below ₹20,000/month.",
+    eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 240000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply through ALIMCO camps or District Social Welfare Officer. Disability certificate (40%+ disability) required.",
+    official_link: "https://disabilityaffairs.gov.in/adip"
+  },
+  {
+    id: "DISHA",
+    name: "Disha — National Programme for Differently Abled",
+    category: "Senior Citizens",
+    description: "Early intervention, special education, vocational training, and rehabilitation for persons with intellectual disabilities.",
+    eligibility: { min_age: 0, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Contact nearest National Institute under Ministry of Social Justice or Composite Regional Centres (CRCs) in your state.",
+    official_link: "https://disabilityaffairs.gov.in"
+  },
+  {
+    id: "SVAYEM",
+    name: "Self-Employment Scheme for Persons with Disabilities",
+    category: "Senior Citizens",
+    description: "Soft loans and margin money grants for self-employment projects for persons with 40%+ disability at 5% interest rate.",
+    eligibility: { min_age: 18, max_age: 55, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 120000, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Apply through National Handicapped Finance and Development Corporation (NHFDC) via state channelising agencies.",
+    official_link: "https://nhfdc.nic.in"
+  },
+
+  // ---- GENERAL / FINANCIAL INCLUSION (3 schemes) ----
+  {
+    id: "PMJDY",
+    name: "PM Jan Dhan Yojana (PMJDY)",
+    category: "Financial Inclusion",
+    description: "Zero balance bank account with RuPay debit card, ₹2 lakh accident insurance, ₹30,000 life insurance, and overdraft facility.",
+    eligibility: { min_age: 10, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Visit any bank branch or business correspondent with Aadhaar card. Account opens same day with zero balance.",
+    official_link: "https://pmjdy.gov.in"
+  },
+  {
+    id: "APY",
+    name: "Atal Pension Yojana (APY)",
+    category: "Financial Inclusion",
+    description: "Guaranteed pension of ₹1,000–5,000/month after age 60 for unorganized sector workers with government co-contribution.",
+    eligibility: { min_age: 18, max_age: 40, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer","Unemployed","Daily wage worker","Self-employed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Enroll at bank branch or mobile banking app. Monthly contribution ₹42–1,454 based on chosen pension amount and age.",
+    official_link: "https://www.jansuraksha.gov.in/APY.aspx"
+  },
+  {
+    id: "DBT",
+    name: "Direct Benefit Transfer (DBT) Portal",
+    category: "Financial Inclusion",
+    description: "Enables citizens to receive benefits of 300+ government schemes directly in their Aadhaar-linked bank accounts.",
+    eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
+    how_to_apply: "Link Aadhaar to bank account at bank branch or through UIDAI portal. Verify seeding at uidai.gov.in/verify-aadhaar.",
+    official_link: "https://dbtbharat.gov.in"
+  }
+];
+
+/* ============================================================
+   SECTION 2: TRANSLATIONS (EN / HI)
+   ============================================================ */
+const TRANSLATIONS = {
+  en: {
+    "header-title": "Scheme Sathi",
+    "header-subtitle": "Find government benefits you deserve",
+    "hero-title": "Find Your Schemes",
+    "hero-desc": "Answer a few questions and our AI will match you with government schemes you qualify for — in seconds.",
+    "personal": "Personal Information",
+    "fullName": "Full Name",
+    "age": "Age",
+    "gender": "Gender",
+    "state": "State",
+    "maritalStatus": "Marital Status",
+    "children": "Number of Children",
+    "economic": "Economic Details",
+    "income": "Monthly Household Income (₹)",
+    "occupation": "Occupation",
+    "caste": "Caste Category",
+    "bpl": "Do you have a BPL card?",
+    "land": "Do you own agricultural land?",
+    "language": "Language Preference",
+    "submit-text": "Find My Schemes →",
+    "share": "Share Results",
+    "newSearch": "Start New Search",
+    "step-1-text": "Analyzing your profile...",
+    "step-2-text": "Matching 40+ schemes...",
+    "step-3-text": "Creating your action plan...",
+    "loading-title": "AI is working for you",
+    "loading-subtitle": "This may take 20-30 seconds",
+    "modal-desc": "Enter your ASI-1 API key to enable AI-powered scheme matching. Your key is stored only in memory and never sent anywhere except the ASI-1 API.",
+    "api-warning-text": "No API key found. Please add your ASI-1 API key using the ⚙️ button to use this app.",
+    "how-to-apply": "How to Apply",
+    "official-link": "Visit Official Website →",
+    "your-action-plan": "Your Personalized Action Plan",
+    "top-priority": "Top Priority Scheme",
+    "action-steps": "Steps to Get Started Today",
+    "documents-needed": "Documents to Gather",
+    "filter-all": "All Schemes",
+    "filter-high": "High Priority",
+    "results-subtitle": "Based on your profile, here are the schemes you qualify for",
+    "langBtn": "हिंदी",
+    "shareWhatsApp": "Share on WhatsApp",
+    "try-demo-label": "✨ Try a Demo — Click to auto-fill form",
+    "chat-header-text": "💬 Ask About Your Schemes",
+    "chat-send-text": "Send",
+    "impact-counter": "Join {n} Indians who found their benefits",
+  },
+  hi: {
+    "header-title": "स्कीम साथी",
+    "header-subtitle": "अपने सरकारी लाभ खोजें",
+    "hero-title": "अपनी योजनाएं खोजें",
+    "hero-desc": "कुछ सवालों का जवाब दें और हमारी AI सेकंडों में आपके लिए सरकारी योजनाएं खोज देगी।",
+    "personal": "व्यक्तिगत जानकारी",
+    "fullName": "पूरा नाम",
+    "age": "आयु",
+    "gender": "लिंग",
+    "state": "राज्य",
+    "maritalStatus": "वैवाहिक स्थिति",
+    "children": "बच्चों की संख्या",
+    "economic": "आर्थिक विवरण",
+    "income": "मासिक घरेलू आय (₹)",
+    "occupation": "व्यवसाय",
+    "caste": "जाति वर्ग",
+    "bpl": "क्या आपके पास BPL कार्ड है?",
+    "land": "क्या आपके पास कृषि भूमि है?",
+    "language": "भाषा प्राथमिकता",
+    "submit-text": "मेरी योजनाएं खोजें →",
+    "share": "परिणाम साझा करें",
+    "newSearch": "नई खोज शुरू करें",
+    "step-1-text": "आपकी प्रोफ़ाइल विश्लेषण हो रही है...",
+    "step-2-text": "40+ योजनाओं से मिलान हो रहा है...",
+    "step-3-text": "आपकी कार्य योजना बनाई जा रही है...",
+    "loading-title": "AI आपके लिए काम कर रही है",
+    "loading-subtitle": "इसमें 20-30 सेकंड लग सकते हैं",
+    "modal-desc": "AI-संचालित योजना मिलान सक्षम करने के लिए अपनी ASI-1 API key दर्ज करें।",
+    "api-warning-text": "कोई API key नहीं मिली। कृपया ⚙️ बटन से ASI-1 API key जोड़ें।",
+    "how-to-apply": "आवेदन कैसे करें",
+    "official-link": "आधिकारिक वेबसाइट →",
+    "your-action-plan": "आपकी व्यक्तिगत कार्य योजना",
+    "top-priority": "सर्वोच्च प्राथमिकता योजना",
+    "action-steps": "आज शुरुआत करने के चरण",
+    "documents-needed": "आवश्यक दस्तावेज़",
+    "filter-all": "सभी योजनाएं",
+    "filter-high": "उच्च प्राथमिकता",
+    "results-subtitle": "आपकी प्रोफ़ाइल के आधार पर, यहाँ वे योजनाएं हैं जिनके लिए आप योग्य हैं",
+    "langBtn": "English",
+    "shareWhatsApp": "WhatsApp पर शेयर करें",
+    "try-demo-label": "✨ डेमो आज़माएं — फॉर्म भरने के लिए क्लिक करें",
+    "chat-header-text": "💬 अपनी योजनाओं के बारे में पूछें",
+    "chat-send-text": "भेजें",
+    "impact-counter": "{n} भारतीयों से जुड़ें जिन्होंने अपने लाभ पाए",
+  }
+};
+
+/* ============================================================
+   SECTION 3: APP STATE
+   ============================================================ */
+let apiKey = "";
+let currentLang = "en";
+let userProfile = null;
+let matchedSchemes = [];
+let actionPlan = null;
+let activeFilter = "all";
+let chatHistory = [];  // conversation history for chained chat context
+
+/* ============================================================
+   SECTION 4: UI HELPERS
+   ============================================================ */
+function t(key) {
+  return TRANSLATIONS[currentLang][key] || TRANSLATIONS["en"][key] || key;
+}
+
+function applyTranslations() {
+  document.querySelectorAll(".t[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    el.textContent = t(key);
+  });
+  document.getElementById("lang-btn").textContent = t("langBtn");
+  document.getElementById("header-title").textContent = t("header-title");
+  document.getElementById("header-subtitle").textContent = t("header-subtitle");
+  document.getElementById("hero-title").textContent = t("hero-title");
+  document.getElementById("hero-desc").textContent = t("hero-desc");
+  document.getElementById("submit-text").textContent = t("submit-text");
+  document.getElementById("modal-desc").textContent = t("modal-desc");
+  document.getElementById("api-warning-text").textContent = t("api-warning-text");
+  const lt = document.getElementById("loading-title");
+  const ls = document.getElementById("loading-subtitle");
+  if (lt) lt.textContent = t("loading-title");
+  if (ls) ls.textContent = t("loading-subtitle");
+  ["step-1-text","step-2-text","step-3-text"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(id);
+  });
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === "en" ? "hi" : "en";
+  // Sync radio button for lang-pref
+  const radios = document.querySelectorAll('input[name="lang-pref"]');
+  radios.forEach(r => {
+    if ((currentLang === "hi" && r.value === "Hindi") || (currentLang === "en" && r.value === "English")) {
+      r.checked = true;
+    }
+  });
+  syncRadio("lang-pref-group");
+  applyTranslations();
+}
+
+function syncRadio(groupId) {
+  document.querySelectorAll(`#${groupId} .radio-btn`).forEach(btn => {
+    btn.classList.toggle("selected", btn.querySelector("input").checked);
+  });
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+function setStepState(num, state) {
+  const el = document.getElementById(`step-${num}`);
+  if (!el) return;
+  el.className = "step-item " + (state || "");
+  const icon = el.querySelector(".step-icon");
+  const icons = ["🔍","📋","📝"];
+  const doneIcons = ["✅","✅","✅"];
+  icon.textContent = state === "done" ? doneIcons[num-1] : (state === "active" ? "⏳" : icons[num-1]);
+}
+
+/* ============================================================
+   SECTION 5: SETTINGS (API Key Modal)
+   ============================================================ */
+function openSettings() {
+  document.getElementById("settings-modal").classList.add("open");
+  if (apiKey) document.getElementById("api-key-input").value = apiKey;
+}
+function closeSettings() {
+  document.getElementById("settings-modal").classList.remove("open");
+}
+function saveApiKey() {
+  const val = document.getElementById("api-key-input").value.trim();
+  if (val) {
+    apiKey = val;
+    document.getElementById("api-warning").classList.add("hidden");
+    closeSettings();
+  } else {
+    document.getElementById("api-key-input").style.borderColor = "red";
+  }
+}
+
+/* ============================================================
+   SECTION 6: FORM HANDLING
+   ============================================================ */
+function getRadioValue(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : "";
+}
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+  if (!apiKey) {
+    document.getElementById("api-warning").classList.remove("hidden");
+    openSettings();
+    return;
+  }
+  userProfile = {
+    name: document.getElementById("f-name").value.trim(),
+    age: parseInt(document.getElementById("f-age").value),
+    gender: document.getElementById("f-gender").value,
+    state: document.getElementById("f-state").value,
+    monthly_income: parseInt(document.getElementById("f-income").value),
+    occupation: document.getElementById("f-occupation").value,
+    caste: getRadioValue("caste") || "General",
+    bpl_card: getRadioValue("bpl") || "No",
+    owns_land: getRadioValue("land") || "No",
+    marital_status: document.getElementById("f-marital").value,
+    num_children: parseInt(document.getElementById("f-children").value),
+    language_preference: getRadioValue("lang-pref") || "English"
+  };
+  if (userProfile.language_preference === "Hindi") currentLang = "hi";
+  // Increment the impact counter in localStorage
+  incrementCounter();
+  runSchemeMatcher();
+}
+
+/* ============================================================
+   SECTION 7: THREE-STEP CHAINED ASI-1 API CALLS
+
+   Strategy:
+   Call 1 — Profile Categorization: Classify the user into
+             demographic groups and assess vulnerability. This
+             primes the AI with structured metadata.
+   Call 2 — Eligibility Matching: Feed all 40 schemes + the
+             categorization result. ASI-1 reasons over each
+             scheme's criteria against the profile.
+   Call 3 — Action Plan: Top 5 matches → personalized action
+             steps and documents in the user's language.
+
+   Each call builds on prior results (chaining), allowing
+   ASI-1 Mini to reason progressively and deeply.
+   ============================================================ */
+const ASI_ENDPOINT = "https://api.asi1.ai/v1/chat/completions";
+const ASI_MODEL = "asi1-mini";
+
+async function callASI(systemPrompt, userPrompt) {
+  const response = await fetch(ASI_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: ASI_MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ],
+      temperature: 0.2,
+      max_tokens: 4000
+    })
+  });
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`ASI-1 API error ${response.status}: ${err}`);
+  }
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+function extractJSON(text) {
+  // Try to extract JSON from the response — handle markdown code blocks
+  const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlockMatch) return JSON.parse(codeBlockMatch[1].trim());
+  // Try bare JSON object or array
+  const objMatch = text.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+  if (objMatch) return JSON.parse(objMatch[0]);
+  return JSON.parse(text);
+}
+
+async function runSchemeMatcher() {
+  showScreen("screen-loading");
+  applyTranslations();
+  setStepState(1, "active");
+  setStepState(2, "");
+  setStepState(3, "");
+
+  let categorization = null;
+  let schemeMatches = [];
+  let plan = null;
+  let apiError = null;
+
+  try {
+    /* ---- CALL 1: Profile Categorization ---- */
+    const call1System = "You are an expert on Indian government welfare schemes. Analyze the user profile and categorize them accurately. Respond ONLY with a valid JSON object, no explanation.";
+    const call1User = `Analyze this citizen profile and return a JSON object with these fields:
+- income_bracket: one of "BPL" / "LIG" / "MIG" / "HIG"
+- primary_demographic_groups: array of applicable groups (e.g. rural-farmer, urban-poor, student, woman, senior-citizen, differently-abled, minority, widow, etc.)
+- vulnerability_score: integer 1-10 (10 = most vulnerable)
+- key_needs: array of need areas (e.g. housing, health, education, employment, agriculture, pension, insurance)
+
+Profile: ${JSON.stringify(userProfile)}
+
+Return ONLY valid JSON.`;
+
+    const raw1 = await callASI(call1System, call1User);
+    categorization = extractJSON(raw1);
+    setStepState(1, "done");
+    setStepState(2, "active");
+
+    /* ---- CALL 2: Eligibility Matching ---- */
+    // Send a compact scheme list to save tokens (id, name, category, eligibility)
+    const compactSchemes = SCHEMES.map(s => ({
+      id: s.id, name: s.name, category: s.category,
+      eligibility: s.eligibility
+    }));
+
+    const call2System = "You are an expert on Indian government welfare schemes. Be precise and thorough. Respond ONLY with a valid JSON array, no explanation.";
+    const call2User = `Based on this citizen profile and categorization, analyze EACH scheme and determine eligibility.
+
+Profile: ${JSON.stringify(userProfile)}
+Categorization: ${JSON.stringify(categorization)}
+Schemes: ${JSON.stringify(compactSchemes)}
+
+Return a JSON array where each element has:
+- scheme_id: (matching id from schemes list)
+- scheme_name: string
+- eligibility_status: "ELIGIBLE" | "LIKELY_ELIGIBLE" | "CHECK_REQUIRED"
+- confidence_score: integer 0-100
+- reason_qualified: 2 sentences explaining why they qualify or what to check
+- priority: "HIGH" | "MEDIUM" | "LOW"
+- estimated_benefit: plain language description of what they will receive
+
+Only include schemes where confidence_score > 30. Return ONLY valid JSON array.`;
+
+    const raw2 = await callASI(call2System, call2User);
+    schemeMatches = extractJSON(raw2);
+    if (!Array.isArray(schemeMatches)) schemeMatches = [];
+    setStepState(2, "done");
+    setStepState(3, "active");
+
+    /* ---- CALL 3: Action Plan ---- */
+    const top5 = [...schemeMatches]
+      .sort((a,b) => {
+        const pOrder = {HIGH:0, MEDIUM:1, LOW:2};
+        return (pOrder[a.priority]||2) - (pOrder[b.priority]||2) || b.confidence_score - a.confidence_score;
+      })
+      .slice(0, 5);
+
+    const lang = userProfile.language_preference || "English";
+    const call3System = `You are a helpful, warm government scheme advisor for Indian citizens. Be friendly, clear, and encouraging. Respond ONLY with valid JSON.`;
+    const call3User = `A citizen named ${userProfile.name} has been matched with these government schemes: ${JSON.stringify(top5)}.
+
+Create a personalized action plan in ${lang}. Return a JSON object with:
+- greeting: personalized 1-sentence welcome (use their name, mention how many schemes they qualify for)
+- top_priority_scheme: { name: string, reason: "one sentence why this is most important for them" }
+- action_steps: array of 3-5 clear, actionable steps to get started TODAY (be specific, mention documents/websites)
+- important_documents: array of 5-8 document names they should gather (applicable across multiple schemes)
+- encouragement: 1 motivating sentence in ${lang}
+
+Return ONLY valid JSON.`;
+
+    const raw3 = await callASI(call3System, call3User);
+    plan = extractJSON(raw3);
+    setStepState(3, "done");
+
+  } catch (err) {
+    apiError = err.message || "Unknown error";
+    console.error("ASI-1 API Error:", err);
+    setStepState(1, "done");
+    setStepState(2, "done");
+    setStepState(3, "done");
+  }
+
+  // Store globally
+  matchedSchemes = schemeMatches.length > 0 ? schemeMatches : [];
+  actionPlan = plan;
+
+  setTimeout(() => renderResults(apiError), 600);
+}
+
+/* ============================================================
+   SECTION 8: RESULTS RENDERING
+   ============================================================ */
+function renderResults(apiError) {
+  showScreen("screen-results");
+
+  // Header
+  document.getElementById("results-name").textContent = `${userProfile.name}, ${t("results-subtitle").split(",")[0]}`;
+  document.getElementById("results-subtitle").textContent = t("results-subtitle");
+  document.getElementById("results-count-badge").textContent =
+    `${matchedSchemes.length} ${currentLang === "hi" ? "योजनाएं मिलीं" : "Schemes Found"}`;
+
+  // Error alert
+  const alertContainer = document.getElementById("alert-container");
+  alertContainer.innerHTML = "";
+  if (apiError) {
+    alertContainer.innerHTML = `
+      <div class="alert alert-error">
+        ⚠️ ${currentLang === "hi" ? "AI विश्लेषण में त्रुटि" : "AI Analysis Error"}: ${apiError}
+        <br><button class="retry-btn" onclick="runSchemeMatcher()">
+          ${currentLang === "hi" ? "पुनः प्रयास करें" : "Retry"}
+        </button>
+      </div>`;
+  }
+
+  // Action Plan
+  renderActionPlan();
+
+  // Filters
+  renderFilters();
+
+  // Scheme cards
+  renderSchemeCards("all");
+
+  // Reset & init chat
+  chatHistory = [];
+  initChat();
+}
+
+function renderActionPlan() {
+  const container = document.getElementById("action-plan-container");
+  if (!actionPlan) {
+    container.innerHTML = `<div class="alert alert-warning">⚠️ ${currentLang === "hi" ? "कार्य योजना उपलब्ध नहीं है। कृपया पुनः प्रयास करें।" : "Action plan unavailable. Please retry."}</div>`;
+    return;
+  }
+  const p = actionPlan;
+  const steps = (p.action_steps || []).map((s, i) =>
+    `<li><div class="step-num">${i+1}</div><span>${s}</span></li>`).join("");
+  const docs = (p.important_documents || []).map(d => `<span class="doc-tag">📄 ${d}</span>`).join("");
+
+  container.innerHTML = `
+    <div class="action-plan-card">
+      <div class="action-plan-title">⚡ ${t("your-action-plan")}</div>
+      <div class="action-plan-greeting">${p.greeting || ""}</div>
+      ${p.top_priority_scheme ? `
+        <div class="top-scheme-badge">
+          ⭐ <strong>${t("top-priority")}: ${p.top_priority_scheme.name || ""}</strong>
+          ${p.top_priority_scheme.reason || ""}
+        </div>` : ""}
+      <div style="font-size:0.8rem;font-weight:700;color:var(--gray-700);margin-bottom:8px;">
+        📋 ${t("action-steps")}
+      </div>
+      <ul class="action-steps-list">${steps}</ul>
+      <div class="docs-section">
+        <div class="docs-title">📁 ${t("documents-needed")}</div>
+        <div>${docs}</div>
+      </div>
+      ${p.encouragement ? `<div class="encouragement">💪 ${p.encouragement}</div>` : ""}
+    </div>`;
+}
+
+function renderFilters() {
+  const categories = ["all", "High Priority", ...new Set(SCHEMES.map(s => s.category))];
+  const container = document.getElementById("filter-chips");
+  container.innerHTML = categories.map(cat => {
+    const label = cat === "all" ? t("filter-all") : (cat === "High Priority" ? t("filter-high") : cat);
+    return `<button class="filter-chip ${cat === "all" ? "active" : ""}" onclick="applyFilter('${cat}', this)">${label}</button>`;
+  }).join("");
+}
+
+function applyFilter(filter, btn) {
+  document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+  btn.classList.add("active");
+  activeFilter = filter;
+  renderSchemeCards(filter);
+}
+
+function renderSchemeCards(filter) {
+  const container = document.getElementById("scheme-cards-container");
+
+  // Merge matched scheme AI data with scheme static data
+  let cards = matchedSchemes.map(match => {
+    const schemeData = SCHEMES.find(s => s.id === match.scheme_id) || {};
+    return { ...schemeData, ...match, _merged: true };
+  });
+
+  // Fallback: if no AI matches, show all schemes
+  if (cards.length === 0) {
+    cards = SCHEMES.map(s => ({
+      ...s,
+      scheme_id: s.id,
+      scheme_name: s.name,
+      eligibility_status: "CHECK_REQUIRED",
+      confidence_score: 50,
+      reason_qualified: s.description,
+      priority: "MEDIUM",
+      estimated_benefit: s.description
+    }));
+  }
+
+  // Sort by priority
+  const pOrder = {HIGH:0, MEDIUM:1, LOW:2};
+  cards.sort((a,b) => (pOrder[a.priority]||2) - (pOrder[b.priority]||2) || b.confidence_score - a.confidence_score);
+
+  // Apply filter
+  let filtered = cards;
+  if (filter === "High Priority") {
+    filtered = cards.filter(c => c.priority === "HIGH");
+  } else if (filter !== "all") {
+    filtered = cards.filter(c => c.category === filter);
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="no-results">
+      ${currentLang === "hi" ? "इस श्रेणी में कोई योजना नहीं मिली।" : "No schemes found in this category."}
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map((card, idx) => {
+    const eligClass = `elig-${card.eligibility_status || "CHECK_REQUIRED"}`;
+    const eligLabel = {
+      ELIGIBLE: currentLang === "hi" ? "योग्य" : "Eligible",
+      LIKELY_ELIGIBLE: currentLang === "hi" ? "संभवतः योग्य" : "Likely Eligible",
+      CHECK_REQUIRED: currentLang === "hi" ? "जांच आवश्यक" : "Check Required"
+    }[card.eligibility_status || "CHECK_REQUIRED"] || "Check Required";
+
+    const priorityLabel = {
+      HIGH: currentLang === "hi" ? "उच्च" : "High",
+      MEDIUM: currentLang === "hi" ? "मध्यम" : "Medium",
+      LOW: currentLang === "hi" ? "कम" : "Low"
+    }[card.priority || "MEDIUM"];
+
+    return `
+      <div class="scheme-card" id="card-${idx}">
+        <div class="scheme-card-header">
+          <div class="scheme-card-top">
+            <div class="scheme-name">${card.scheme_name || card.name || "Scheme"}</div>
+            <div class="priority-badge priority-${card.priority || "MEDIUM"}">${priorityLabel}</div>
+          </div>
+          <div class="scheme-badges">
+            <span class="category-badge">${card.category || "General"}</span>
+            <span class="eligibility-badge ${eligClass}">${eligLabel}</span>
+          </div>
+          <div class="scheme-reason">${card.reason_qualified || card.description || ""}</div>
+          <div class="confidence-bar">
+            <div class="confidence-fill" style="width: ${card.confidence_score || 50}%"></div>
+          </div>
+          ${card.estimated_benefit ? `<div class="scheme-benefit">💰 ${card.estimated_benefit}</div>` : ""}
+        </div>
+        <button class="expand-btn" onclick="toggleDetails(${idx}, this)">
+          ${t("how-to-apply")} <span class="expand-chevron">▼</span>
+        </button>
+        <div class="scheme-details" id="details-${idx}">
+          <div class="how-to-apply">${card.how_to_apply || ""}</div>
+          ${card.official_link ? `<a class="apply-link" href="${card.official_link}" target="_blank" rel="noopener noreferrer">🔗 ${t("official-link")}</a>` : ""}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function toggleDetails(idx, btn) {
+  const details = document.getElementById(`details-${idx}`);
+  const isOpen = details.classList.contains("open");
+  details.classList.toggle("open", !isOpen);
+  btn.classList.toggle("expanded", !isOpen);
+}
+
+/* ============================================================
+   SECTION 9: SHARE & NAVIGATION
+   ============================================================ */
+function shareResults() {
+  const topSchemes = matchedSchemes.slice(0, 5).map(s => `• ${s.scheme_name} (${s.priority} Priority)`).join("\n");
+  const text = `🇮🇳 Scheme Sathi Results for ${userProfile.name}\n\nTop Schemes You Qualify For:\n${topSchemes}\n\nPowered by ASI-1 AI\nCheck your schemes at Scheme Sathi!`;
+  if (navigator.share) {
+    navigator.share({ title: "My Scheme Sathi Results", text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      alert(currentLang === "hi" ? "परिणाम क्लिपबोर्ड पर कॉपी हो गए!" : "Results copied to clipboard!");
+    });
+  }
+}
+
+/* WhatsApp Share — pre-formatted message with top 3 schemes */
+function shareWhatsApp() {
+  const top3 = [...matchedSchemes]
+    .sort((a,b) => {
+      const p = {HIGH:0,MEDIUM:1,LOW:2};
+      return (p[a.priority]||2)-(p[b.priority]||2) || b.confidence_score-a.confidence_score;
+    })
+    .slice(0, 3);
+
+  const hi = currentLang === "hi";
+  const lines = top3.map((s, i) => {
+    const schemeStatic = SCHEMES.find(sc => sc.id === s.scheme_id) || {};
+    const status = s.eligibility_status === "ELIGIBLE"
+      ? (hi ? "✅ योग्य" : "✅ Eligible")
+      : s.eligibility_status === "LIKELY_ELIGIBLE"
+        ? (hi ? "🟡 संभवतः योग्य" : "🟡 Likely Eligible")
+        : (hi ? "🔵 जांच करें" : "🔵 Check Required");
+    return `${i+1}. *${s.scheme_name}*\n   ${status}\n   ${hi ? "आवेदन करें" : "Apply"}: ${schemeStatic.official_link || ""}`;
+  }).join("\n\n");
+
+  const intro = hi
+    ? `🇮🇳 *स्कीम साथी* — ${userProfile.name} के लिए मिली सरकारी योजनाएं:\n\n`
+    : `🇮🇳 *Scheme Sathi* — Government Schemes found for ${userProfile.name}:\n\n`;
+  const footer = hi
+    ? `\n\n_ASI-1 AI द्वारा संचालित | Scheme Sathi_`
+    : `\n\n_Powered by ASI-1 AI | Scheme Sathi_`;
+
+  const message = encodeURIComponent(intro + lines + footer);
+  window.open(`https://wa.me/?text=${message}`, "_blank", "noopener,noreferrer");
+}
+
+/* ============================================================
+   CALL 4 — Document Checklist Generator
+   Takes the user's top 5 matched schemes and asks ASI-1 to
+   produce a per-scheme document list. The result is rendered
+   into a self-contained printable HTML page and opened in a
+   new tab — no server required.
+   ============================================================ */
+async function downloadChecklist() {
+  const btn = document.getElementById("checklist-btn");
+  const btnText = document.getElementById("checklist-btn-text");
+  const hi = currentLang === "hi";
+
+  if (!apiKey) {
+    alert(hi ? "कृपया पहले API key सेट करें।" : "Please set your API key first.");
+    openSettings();
+    return;
+  }
+
+  // ── Open the tab NOW, synchronously, while we're still inside the click
+  //    handler. Browsers block window.open after an await (no user gesture).
+  const checklistTab = window.open("", "_blank");
+  if (!checklistTab) {
+    alert(hi
+      ? "पॉपअप ब्लॉक हो गया। कृपया इस साइट के लिए पॉपअप की अनुमति दें।"
+      : "Pop-up blocked. Please allow pop-ups for this page and try again.");
+    return;
+  }
+
+  // Show a loading page in the tab immediately
+  checklistTab.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>${hi ? "चेकलिस्ट बन रही है..." : "Generating checklist..."}</title>
+    <style>
+      body { font-family: sans-serif; display: flex; align-items: center;
+             justify-content: center; min-height: 100vh; margin: 0;
+             background: #FFF3E0; color: #E65100; }
+      .wrap { text-align: center; }
+      .spin { width: 48px; height: 48px; border: 5px solid #FFE0B2;
+              border-top-color: #FF9933; border-radius: 50%;
+              animation: s .8s linear infinite; margin: 0 auto 20px; }
+      @keyframes s { to { transform: rotate(360deg); } }
+      h2 { font-size: 1.2rem; margin-bottom: 8px; }
+      p  { font-size: .9rem; color: #888; }
+    </style></head><body>
+    <div class="wrap">
+      <div class="spin"></div>
+      <h2>${hi ? "ASI-1 आपकी चेकलिस्ट बना रहा है…" : "ASI-1 is building your checklist…"}</h2>
+      <p>${hi ? "कृपया प्रतीक्षा करें" : "Please wait a moment"}</p>
+    </div></body></html>`);
+  checklistTab.document.close();
+
+  btn.disabled = true;
+  btnText.textContent = hi ? "चेकलिस्ट बनाई जा रही है..." : "Generating checklist...";
+
+  // Top 5 schemes by priority + confidence
+  const top5 = [...matchedSchemes]
+    .sort((a, b) => {
+      const p = { HIGH: 0, MEDIUM: 1, LOW: 2 };
+      return (p[a.priority] || 2) - (p[b.priority] || 2) || b.confidence_score - a.confidence_score;
+    })
+    .slice(0, 5)
+    .map(s => {
+      const staticData = SCHEMES.find(sc => sc.id === s.scheme_id) || {};
+      return {
+        scheme_name: s.scheme_name,
+        eligibility_status: s.eligibility_status,
+        estimated_benefit: s.estimated_benefit,
+        how_to_apply: staticData.how_to_apply || "",
+        official_link: staticData.official_link || ""
+      };
+    });
+
+  const lang = hi ? "Hindi" : "English";
+
+  const system = `You are a precise government scheme advisor. Return ONLY valid JSON, no markdown, no explanation.`;
+  const prompt = `The citizen "${userProfile.name}" (${userProfile.age} yrs, ${userProfile.gender}, ${userProfile.state}, ${userProfile.occupation}, income ₹${userProfile.monthly_income}/mo, caste ${userProfile.caste}, BPL: ${userProfile.bpl_card}) qualifies for these schemes:
+
+${JSON.stringify(top5)}
+
+For each scheme, list the exact documents needed to apply. Return a JSON array where each item has:
+- scheme_name: string
+- official_link: string (from the data above)
+- estimated_benefit: string
+- documents: array of objects, each with:
+    - name: document name in ${lang}
+    - note: one short clarifying note (e.g. "attested copy required" or "self-declaration accepted") in ${lang}
+- application_mode: brief note on WHERE to apply (online portal / office) in ${lang}
+
+Be precise. Only list documents that are actually required. Return ONLY valid JSON array.`;
+
+  let checklistData = null;
+  try {
+    const raw = await callASI(system, prompt);
+    checklistData = extractJSON(raw);
+    if (!Array.isArray(checklistData)) throw new Error("Not an array");
+  } catch (err) {
+    console.error("Checklist API error:", err);
+    // Fallback: build a basic checklist from static data
+    checklistData = top5.map(s => ({
+      scheme_name: s.scheme_name,
+      official_link: s.official_link,
+      estimated_benefit: s.estimated_benefit,
+      documents: [
+        { name: "Aadhaar Card", note: "Self-attested copy" },
+        { name: "Bank Passbook", note: "First page with account details" },
+        { name: "Passport-size Photograph", note: "Recent, white background" },
+        { name: "Income Certificate", note: "Issued by competent authority" },
+        { name: "Caste Certificate", note: "If applicable" }
+      ],
+      application_mode: s.how_to_apply || "Visit nearest government office"
+    }));
+  }
+
+  // Write the final checklist HTML into the already-open tab
+  writeChecklistToTab(checklistTab, checklistData, hi);
+
+  btn.disabled = false;
+  btnText.textContent = hi ? "चेकलिस्ट फिर से डाउनलोड करें" : "Download My Document Checklist";
+}
+
+function writeChecklistToTab(tab, data, hi) {
+  const now = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+  const title = hi ? "दस्तावेज़ चेकलिस्ट — स्कीम साथी" : "Document Checklist — Scheme Sathi";
+  const subtitle = hi
+    ? `${userProfile.name} के लिए · ${now} · ASI-1 AI द्वारा तैयार`
+    : `Prepared for ${userProfile.name} · ${now} · Generated by ASI-1 AI`;
+  const printLabel = hi ? "प्रिंट करें" : "Print";
+  const docHeader = hi ? "आवश्यक दस्तावेज़" : "Required Documents";
+  const applyHeader = hi ? "आवेदन कैसे करें" : "How to Apply";
+  const benefitHeader = hi ? "अपेक्षित लाभ" : "Expected Benefit";
+  const footerNote = hi
+    ? "यह चेकलिस्ट ASI-1 AI द्वारा आपकी प्रोफ़ाइल के आधार पर तैयार की गई है।"
+    : "This checklist was generated by ASI-1 AI based on your profile. Verify requirements at the official portal before applying.";
+
+  const schemeBlocks = data.map((scheme, i) => {
+    const docs = (scheme.documents || []).map(doc => `
+      <li class="doc-item">
+        <label class="doc-label">
+          <input type="checkbox" class="doc-check" />
+          <span class="doc-name">${doc.name}</span>
+        </label>
+        ${doc.note ? `<span class="doc-note">${doc.note}</span>` : ""}
+      </li>`).join("");
+
+    return `
+      <div class="scheme-block">
+        <div class="scheme-num">${i + 1}</div>
+        <div class="scheme-content">
+          <div class="scheme-title">${scheme.scheme_name}</div>
+          <div class="scheme-meta">
+            <span class="meta-pill benefit">💰 ${scheme.estimated_benefit || ""}</span>
+            ${scheme.official_link
+              ? `<a class="meta-pill link" href="${scheme.official_link}" target="_blank">${scheme.official_link}</a>`
+              : ""}
+          </div>
+
+          <div class="section-label">📋 ${docHeader}</div>
+          <ul class="doc-list">${docs}</ul>
+
+          <div class="section-label">🏢 ${applyHeader}</div>
+          <div class="apply-note">${scheme.application_mode || ""}</div>
+        </div>
+      </div>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html>
+<html lang="${hi ? "hi" : "en"}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title}</title>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+      .scheme-block { break-inside: avoid; page-break-inside: avoid; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Arial, sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .page { max-width: 780px; margin: 0 auto; padding: 32px 24px 60px; }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #FF9933 0%, #FF6B00 50%, #138808 100%);
+      color: white;
+      padding: 28px 32px;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: "🇮🇳";
+      position: absolute;
+      right: 24px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      opacity: 0.18;
+    }
+    .header h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+    .header p { opacity: 0.9; font-size: 0.875rem; }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 9px 20px;
+      background: rgba(255,255,255,0.25);
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: white;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .print-btn:hover { background: rgba(255,255,255,0.4); }
+
+    /* Summary strip */
+    .summary-strip {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .summary-pill {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #374151;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    /* Scheme blocks */
+    .scheme-block {
+      background: white;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      overflow: hidden;
+      display: flex;
+    }
+    .scheme-num {
+      background: linear-gradient(180deg, #FF9933, #E65100);
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 800;
+      width: 52px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scheme-content { padding: 20px 22px; flex: 1; }
+    .scheme-title { font-size: 1.05rem; font-weight: 800; color: #111827; margin-bottom: 10px; }
+    .scheme-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .meta-pill {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .meta-pill.benefit { background: #DCFCE7; color: #15803D; }
+    .meta-pill.link { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #6B7280;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    /* Document list */
+    .doc-list { list-style: none; margin-bottom: 16px; }
+    .doc-item {
+      padding: 9px 0;
+      border-bottom: 1px solid #F3F4F6;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .doc-item:last-child { border-bottom: none; }
+    .doc-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      flex: 1;
+    }
+    .doc-check {
+      width: 18px; height: 18px;
+      accent-color: #FF9933;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .doc-name { font-size: 0.9rem; font-weight: 600; color: #111827; }
+    .doc-note {
+      font-size: 0.78rem;
+      color: #9CA3AF;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .apply-note {
+      background: #F9FAFB;
+      border-left: 3px solid #FF9933;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #E5E7EB;
+      font-size: 0.78rem;
+      color: #9CA3AF;
+    }
+    .footer strong { color: #FF9933; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>📋 ${title}</h1>
+    <p>${subtitle}</p>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ ${printLabel}</button>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-pill">👤 ${userProfile.name}</div>
+    <div class="summary-pill">📍 ${userProfile.state}</div>
+    <div class="summary-pill">💼 ${userProfile.occupation}</div>
+    <div class="summary-pill">💰 ₹${Number(userProfile.monthly_income).toLocaleString("en-IN")}/mo</div>
+    <div class="summary-pill">🏷️ ${userProfile.caste}</div>
+  </div>
+
+  ${schemeBlocks}
+
+  <div class="footer">
+    <p><strong>Scheme Sathi</strong> · ${footerNote}</p>
+    <p style="margin-top:4px;">Powered by ASI-1 Mini · ${now}</p>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+  // Write the fully-rendered HTML into the tab that was opened synchronously
+  tab.document.open();
+  tab.document.write(html);
+  tab.document.close();
+}
+
+function goBack() {
+  showScreen("screen-form");
+}
+
+/* ============================================================
+   SECTION 10: IMPACT COUNTER (localStorage)
+   — Starts at 127 so it's never empty on day one.
+   ============================================================ */
+const COUNTER_KEY = "scheme_sathi_users";
+const COUNTER_SEED = 127;
+
+function getCounter() {
+  return parseInt(localStorage.getItem(COUNTER_KEY) || COUNTER_SEED, 10);
+}
+
+function incrementCounter() {
+  const current = getCounter();
+  localStorage.setItem(COUNTER_KEY, current + 1);
+  renderCounter();
+}
+
+function renderCounter() {
+  const n = getCounter().toLocaleString("en-IN");
+  const tmpl = t("impact-counter");
+  const text = tmpl.replace("{n}", n);
+  const el = document.getElementById("impact-counter-text");
+  if (el) el.textContent = text;
+}
+
+/* ============================================================
+   SECTION 11: DEMO PERSONAS
+   — Auto-fill the entire form with one click.
+   ============================================================ */
+const PERSONAS = {
+  ramu: {
+    name: "Ramu Kumar", age: 45, gender: "Male", state: "Bihar",
+    monthly_income: 4000, occupation: "Farmer", caste: "SC",
+    bpl: "Yes", land: "Yes", marital: "Married", children: "3",
+    lang: "English"
+  },
+  sunita: {
+    name: "Sunita Devi", age: 32, gender: "Female", state: "Madhya Pradesh",
+    monthly_income: 6000, occupation: "Unemployed", caste: "OBC",
+    bpl: "Yes", land: "No", marital: "Widowed", children: "2",
+    lang: "Hindi"
+  },
+  arjun: {
+    name: "Arjun Selvam", age: 19, gender: "Male", state: "Tamil Nadu",
+    monthly_income: 18000, occupation: "Student", caste: "OBC",
+    bpl: "No", land: "No", marital: "Single", children: "0",
+    lang: "English"
+  }
+};
+
+function fillPersona(key) {
+  const p = PERSONAS[key];
+  if (!p) return;
+
+  document.getElementById("f-name").value = p.name;
+  document.getElementById("f-age").value = p.age;
+  document.getElementById("f-gender").value = p.gender;
+
+  // Set state dropdown
+  const stateEl = document.getElementById("f-state");
+  for (const opt of stateEl.options) {
+    if (opt.text === p.state || opt.value === p.state) {
+      stateEl.value = opt.value;
+      break;
+    }
+  }
+
+  document.getElementById("f-income").value = p.monthly_income;
+  document.getElementById("f-occupation").value = p.occupation;
+  document.getElementById("f-marital").value = p.marital;
+  document.getElementById("f-children").value = p.children;
+
+  // Set radio buttons
+  function setRadio(name, val) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      r.checked = r.value === val;
+    });
+  }
+  setRadio("caste", p.caste);
+  setRadio("bpl", p.bpl);
+  setRadio("land", p.land);
+  setRadio("lang-pref", p.lang);
+
+  // Sync all radio groups visually
+  ["caste-group","bpl-group","land-group","lang-pref-group"].forEach(syncRadio);
+
+  // Flash effect to signal auto-fill worked
+  const form = document.getElementById("profile-form");
+  form.style.transition = "opacity 0.15s";
+  form.style.opacity = "0.4";
+  setTimeout(() => { form.style.opacity = "1"; }, 200);
+
+  // Scroll to form
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ============================================================
+   SECTION 12: CONVERSATIONAL CHAT
+   — Sends profile + matched schemes + conversation history
+     to ASI-1 API so answers are fully personalised.
+   ============================================================ */
+function initChat() {
+  const messagesEl = document.getElementById("chat-messages");
+  if (!messagesEl) return;
+  messagesEl.innerHTML = "";
+
+  // Welcome bubble from assistant
+  const hi = currentLang === "hi";
+  const welcome = hi
+    ? `नमस्ते! मैं आपकी योजनाओं के बारे में किसी भी सवाल का जवाब दे सकता हूं। आप क्या जानना चाहते हैं?`
+    : `Hi! I can answer any questions about your matched schemes. What would you like to know?`;
+  appendChatBubble("assistant", welcome);
+
+  // Update suggestion chips language
+  const chips = document.querySelectorAll(".chat-suggestion-chip");
+  if (hi) {
+    const hiChips = [
+      "सबसे अच्छी योजना के लिए कैसे आवेदन करें?",
+      "कौन से दस्तावेज़ चाहिए?",
+      "सबसे ज़्यादा पैसे किस योजना में मिलते हैं?",
+      "क्या मैं आयुष्मान भारत के लिए योग्य हूं?"
+    ];
+    chips.forEach((c, i) => { if (hiChips[i]) c.textContent = hiChips[i]; });
+  }
+
+  // Translate static chat UI elements
+  const chatHeaderEl = document.getElementById("chat-header-text");
+  if (chatHeaderEl) chatHeaderEl.textContent = t("chat-header-text");
+  const sendTextEl = document.getElementById("chat-send-text");
+  if (sendTextEl) sendTextEl.textContent = t("chat-send-text");
+  const inputEl = document.getElementById("chat-input");
+  if (inputEl) {
+    inputEl.placeholder = hi
+      ? "अपनी योजनाओं के बारे में कुछ भी पूछें..."
+      : "Ask anything about your matched schemes...";
+  }
+}
+
+function appendChatBubble(role, text) {
+  const messagesEl = document.getElementById("chat-messages");
+  const div = document.createElement("div");
+  div.className = `chat-bubble ${role}`;
+  div.textContent = text;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return div;
+}
+
+function useSuggestion(chipEl) {
+  const input = document.getElementById("chat-input");
+  input.value = chipEl.textContent;
+  input.focus();
+  // Hide suggestions after first use
+  document.getElementById("chat-suggestions").style.display = "none";
+  sendChatMessage();
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("chat-send-btn");
+  const question = input.value.trim();
+  if (!question) return;
+  if (!apiKey) {
+    appendChatBubble("assistant", currentLang === "hi"
+      ? "कृपया पहले ⚙️ बटन से API key सेट करें।"
+      : "Please set your API key first using the ⚙️ button.");
+    return;
+  }
+
+  // Show user bubble, clear input
+  appendChatBubble("user", question);
+  input.value = "";
+  sendBtn.disabled = true;
+  document.getElementById("chat-suggestions").style.display = "none";
+
+  // Add to history
+  chatHistory.push({ role: "user", content: question });
+
+  // Thinking indicator
+  const thinkingBubble = appendChatBubble("thinking", currentLang === "hi" ? "सोच रहा हूं..." : "Thinking...");
+
+  try {
+    // Build context: profile + top matched schemes + conversation history
+    const top8 = [...matchedSchemes]
+      .sort((a,b) => (b.confidence_score||0)-(a.confidence_score||0))
+      .slice(0, 8)
+      .map(s => ({
+        name: s.scheme_name,
+        status: s.eligibility_status,
+        priority: s.priority,
+        benefit: s.estimated_benefit,
+        reason: s.reason_qualified,
+        apply: (SCHEMES.find(sc => sc.id === s.scheme_id) || {}).how_to_apply || "",
+        link: (SCHEMES.find(sc => sc.id === s.scheme_id) || {}).official_link || ""
+      }));
+
+    const lang = currentLang === "hi" ? "Hindi" : "English";
+    const systemPrompt = `You are a helpful, friendly government scheme advisor for Indian citizens. Answer ONLY in ${lang}. Be concise (2-4 sentences). The citizen's profile: ${JSON.stringify(userProfile)}. Their matched schemes: ${JSON.stringify(top8)}. Use this context to give highly personalized, accurate answers. Never make up scheme names or benefits.`;
+
+    // Send full conversation history for multi-turn coherence
+    const messages = [
+      { role: "system", content: systemPrompt },
+      ...chatHistory
+    ];
+
+    const response = await fetch(ASI_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: ASI_MODEL,
+        messages,
+        temperature: 0.4,
+        max_tokens: 400
+      })
+    });
+
+    if (!response.ok) throw new Error(`API error ${response.status}`);
+    const data = await response.json();
+    const answer = data.choices[0].message.content.trim();
+
+    // Replace thinking bubble with real answer
+    thinkingBubble.className = "chat-bubble assistant";
+    thinkingBubble.textContent = answer;
+
+    // Add assistant reply to history
+    chatHistory.push({ role: "assistant", content: answer });
+
+    // Keep history concise: last 10 turns (5 pairs)
+    if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
+  } catch (err) {
+    thinkingBubble.className = "chat-bubble assistant";
+    thinkingBubble.textContent = currentLang === "hi"
+      ? "माफ करें, कोई त्रुटि हुई। कृपया पुनः प्रयास करें।"
+      : "Sorry, something went wrong. Please try again.";
+    console.error("Chat error:", err);
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+
+/* ============================================================
+   SECTION 13: INITIALIZATION
+   ============================================================ */
+function init() {
+  applyTranslations();
+  ["caste-group","bpl-group","land-group","lang-pref-group"].forEach(syncRadio);
+  if (!apiKey) {
+    document.getElementById("api-warning").classList.remove("hidden");
+  }
+  // Load impact counter from localStorage (seeds at 127)
+  renderCounter();
+  // Apply language to persona label
+  const demoLabel = document.getElementById("try-demo-label");
+  if (demoLabel) demoLabel.textContent = t("try-demo-label");
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
