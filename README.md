@@ -1,74 +1,68 @@
-# Scheme Sathi 🇮🇳
+# Scheme Sathi
 ### AI-Powered Government Scheme Matcher for Indian Citizens
 
-> **Hackathon Project** — Built with ASI-1 Mini API
+> **API Innovate 2026 Submission** — Built with ASI:One (ASI-1 Mini) API
 > Helps Indian citizens discover government welfare schemes they qualify for in seconds.
 
 ---
 
 ## What It Does
 
-A citizen fills a 12-field profile form → the app makes **3 chained calls to ASI-1 API** → returns personalized government schemes they qualify for, with eligibility reasoning, estimated benefits, and a step-by-step action plan.
+A citizen fills a 12-field profile form → the app makes **3 chained calls to the ASI:One API** → returns personalized government schemes they qualify for, with eligibility reasoning, estimated benefits, a step-by-step action plan, and an interactive AI chat for follow-up questions.
+
+**Live Demo:** Just open `index.html` — the API key is pre-configured and ready to use.
 
 ---
 
-## Screenshots
+## Key Features
 
-| Form | Loading | Results |
-|------|---------|---------|
-| *(Profile form with tricolor design)* | *(3-step animated progress)* | *(AI-matched scheme cards)* |
-
----
-
-## Setup Instructions
-
-### 1. Get Your ASI-1 API Key
-- Obtain your API key from the ASI-1 platform
-- No registration needed beyond your API key
-
-### 2. Open the App
-- Simply open `index.html` in any modern browser — **no build step, no server needed**
-- The app is a single self-contained HTML file
-
-### 3. Add Your API Key
-- Click the **⚙️ gear icon** in the top-right header
-- Paste your ASI-1 API key in the modal
-- Click **Save Key**
-- The key is stored in memory only (cleared on page refresh — by design for security)
-
-### 4. Use the App
-1. Fill in your profile (age, income, occupation, caste, state, etc.)
-2. Click **"Find My Schemes →"**
-3. Watch the 3-step AI analysis run
-4. Browse your personalized scheme matches and action plan
+- **3-Step Chained AI Prompting** — progressive reasoning from profile → eligibility → action plan
+- **40 Government Schemes** across 7 categories (Agriculture, Health, Education, Housing, Employment, Women & Children, Senior Citizens)
+- **AI Chat Assistant** — ask follow-up questions about any scheme, fully context-aware
+- **Printable Document Checklist** — AI generates a personalized document list (4th API call)
+- **Bilingual UI** — English and Hindi, with AI responses in the user's chosen language
+- **WhatsApp Share** — share results directly via WhatsApp
+- **Demo Personas** — try the app instantly with pre-built citizen profiles
+- **Impact Counter** — tracks how many citizens have used the tool
+- **Mobile-First Design** — Indian tricolor theme, works on any screen size
 
 ---
 
-## The 3-Step Prompting Strategy (Core Innovation)
+## Setup
 
-This is what makes Scheme Sathi different from a simple rule-based filter. Each step builds on the previous, enabling **progressive AI reasoning**:
+### Open & Use Immediately
+- Open `index.html` in any modern browser — **no build step, no server, no configuration needed**
+- The ASI:One API key is pre-configured — just open and use
+
+### Tech Stack
+- **Frontend:** Vanilla HTML/CSS/JavaScript — zero frameworks, zero dependencies
+- **AI:** ASI:One (ASI-1 Mini) via REST API at `https://api.asi1.ai/v1/chat/completions`
+- **Deployment:** Any static host (GitHub Pages, Netlify, S3) or local file
+
+---
+
+## The 3-Step Chained Prompting Strategy
+
+This is the core innovation — each API call builds on the previous, enabling **progressive AI reasoning** rather than a one-shot query.
 
 ### Step 1 — Profile Categorization
-**System:** Expert in Indian government welfare schemes
-**Task:** Classify the user into `income_bracket` (BPL/LIG/MIG/HIG), `primary_demographic_groups` (rural-farmer, woman, student, etc.), `vulnerability_score` (1-10), and `key_needs` (housing, health, education, etc.)
+**Task:** Classify the user into structured metadata: `income_bracket` (BPL/LIG/MIG/HIG), `primary_demographic_groups`, `vulnerability_score` (1–10), and `key_needs`.
 
-**Why this works:** ASI-1 creates structured metadata from unstructured profile data, which primes subsequent reasoning.
+**Why:** ASI-1 creates structured metadata from unstructured profile data, priming the next call with enriched context.
 
 ### Step 2 — Eligibility Matching
-**System:** Precise scheme eligibility expert
-**Task:** Compare the user profile + Step 1 categorization against all 40 schemes. For each: `eligibility_status`, `confidence_score`, `reason_qualified`, `priority`, `estimated_benefit`
+**Task:** Compare the user profile + Step 1 categorization against all 40 schemes. Returns `eligibility_status`, `confidence_score`, `reason_qualified`, `priority`, and `estimated_benefit` for each.
 
-**Why this works:** The categorization from Step 1 enriches the context. ASI-1 reasons about edge cases (e.g., "farmer with BPL card under 40 → eligible for both PM-KISAN and PMKMY").
+**Why:** The categorization from Step 1 enriches reasoning. ASI-1 handles edge cases (e.g., "farmer with BPL card under 40 → eligible for both PM-KISAN and PMKMY").
 
 ### Step 3 — Action Plan
-**System:** Friendly, warm government scheme advisor
-**Task:** From the top 5 matches, generate a personalized `greeting`, `top_priority_scheme`, `action_steps`, `important_documents`, and `encouragement` — in the user's chosen language (English or Hindi)
+**Task:** From the top 5 matches, generate a personalized `greeting`, `top_priority_scheme`, `action_steps`, `important_documents`, and `encouragement` in the user's chosen language.
 
-**Why this works:** The final call synthesizes everything into actionable guidance rather than just a list, making the output immediately useful to citizens.
+**Why:** Synthesizes everything into immediately actionable guidance, not just a list.
 
 ---
 
-## All 40 Government Schemes Covered
+## All 40 Government Schemes
 
 ### Agriculture (8)
 1. PM Kisan Samman Nidhi (PM-KISAN)
@@ -131,30 +125,24 @@ This is what makes Scheme Sathi different from a simple rule-based filter. Each 
 
 ---
 
-## Tech Stack
-- **Frontend:** Vanilla HTML/CSS/JavaScript — zero frameworks, zero build tools
-- **AI Backend:** ASI-1 Mini via REST API (OpenAI-compatible format)
-- **Design:** Mobile-first, Indian tricolor theme (saffron/white/green)
-- **Deployment:** Any static host (GitHub Pages, Netlify, S3) or local file
-
----
-
 ## File Structure
 ```
 scheme-sathi/
 ├── index.html       # Complete app (HTML + CSS + JS + Schemes + Translations)
-├── .env.example     # API key reference (key entered via UI, not file)
+├── thumbnail.png    # App preview image
+├── thumbnail.html   # Thumbnail generator
 └── README.md        # This file
 ```
 
 ---
 
-## ASI-1 API Integration
+## ASI:One API Integration
 - **Endpoint:** `https://api.asi1.ai/v1/chat/completions`
 - **Model:** `asi1-mini`
-- **Auth:** Bearer token (entered via in-app settings modal)
+- **Calls per session:** 4 (3 for scheme matching + 1 for document checklist)
 - **Format:** OpenAI-compatible JSON
+- **Temperature:** 0.2 (for consistent, factual responses)
 
 ---
 
-*Powered by ASI-1 Mini | Built for the ASI-1 API Hackathon 2026*
+*Built for API Innovate 2026 · Powered by ASI:One*
