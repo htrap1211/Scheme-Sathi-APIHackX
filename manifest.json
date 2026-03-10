@@ -1,0 +1,16 @@
+{
+  "name": "Scheme Sathi",
+  "short_name": "Scheme Sathi",
+  "description": "AI-powered government scheme matcher for Indian citizens",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFAF5",
+  "theme_color": "#FF8C00",
+  "icons": [
+    {
+      "src": "thumbnail.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

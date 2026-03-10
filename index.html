@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scheme Sathi — Government Scheme Matcher</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#FF8C00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Scheme Sathi" />
   <!-- ============================================================
        SCHEME SATHI — Government Scheme Matcher for Indian Citizens
        Powered by ASI-1 API (3-Step Chained Prompting Strategy)
@@ -1025,6 +1030,257 @@
       white-space: nowrap;
     }
     .chat-suggestion-chip:hover { border-color: var(--navy); background: rgba(0,0,128,0.08); transform: translateY(-1px); }
+
+    /* ==================== RESUME BANNER ==================== */
+    .resume-banner {
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border: 1.5px solid #93C5FD;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .resume-banner-text { font-size: 0.875rem; color: #1D4ED8; font-weight: 600; }
+    .resume-banner-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .resume-btn {
+      padding: 8px 18px;
+      background: #1D4ED8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .resume-btn:hover { background: #1E40AF; }
+    .clear-data-link {
+      font-size: 0.75rem;
+      color: #6B7280;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .clear-data-link:hover { color: var(--red); }
+
+    /* ==================== WIZARD PROGRESS BAR ==================== */
+    .wizard-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 20px;
+      border: 1px solid rgba(255,153,51,0.1);
+    }
+    .wizard-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .wizard-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--gray-200);
+      z-index: 0;
+    }
+    .wizard-step.done:not(:last-child)::after { background: var(--saffron); }
+    .wizard-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--gray-500);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+    .wizard-step.active .wizard-dot {
+      background: linear-gradient(135deg, var(--saffron), #FF5500);
+      color: white;
+      box-shadow: 0 4px 12px rgba(255,153,51,0.4);
+    }
+    .wizard-step.done .wizard-dot {
+      background: var(--green);
+      color: white;
+    }
+    .wizard-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--gray-500);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .wizard-step.active .wizard-label { color: var(--saffron-dark); }
+    .wizard-step.done .wizard-label { color: var(--green); }
+
+    /* Wizard form step panels */
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeUp 0.3s ease; }
+
+    /* Wizard nav buttons */
+    .wizard-nav { display: flex; gap: 10px; margin-top: 10px; }
+    .wizard-back-btn {
+      flex: 1;
+      padding: 15px;
+      background: white;
+      border: 2px solid var(--saffron);
+      color: var(--saffron-dark);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .wizard-back-btn:hover { background: var(--saffron-light); }
+    .wizard-next-btn {
+      flex: 2;
+      padding: 15px;
+      background: linear-gradient(90deg, #FF8C00, #FF5500, #FF9933, #FF5500, #FF8C00);
+      background-size: 300% auto;
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      animation: shimmer 4s linear infinite;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: var(--shadow-saffron);
+    }
+    .wizard-next-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(255,100,0,0.45); }
+
+    /* ==================== DEADLINE BADGE ==================== */
+    .deadline-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.67rem;
+      font-weight: 700;
+    }
+    .deadline-ongoing { background: #DCFCE7; color: #16A34A; border: 1px solid #86EFAC; }
+    .deadline-urgent { background: #FEF3C7; color: #D97706; border: 1px solid #FCD34D; }
+
+    /* ==================== APPLY NOW BUTTON ==================== */
+    .apply-now-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: white;
+      color: #E65100;
+      border: 2px solid #FF9933;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    .apply-now-btn:hover { background: #FFF3E0; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,153,51,0.3); }
+
+    /* ==================== STATE SCHEME BADGE ==================== */
+    .state-scheme-badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: #EDE9FE;
+      color: #7C3AED;
+      border: 1px solid #C4B5FD;
+    }
+
+    /* ==================== LANGUAGE PILLS ==================== */
+    .lang-pills {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .lang-pill {
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .lang-pill:hover, .lang-pill.active { background: rgba(255,255,255,0.35); border-color: white; }
+
+    /* ==================== PDF / PRINT BUTTON ==================== */
+    .pdf-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #7C3AED, #5B21B6);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.25);
+    }
+    .pdf-btn:hover { background: linear-gradient(135deg, #6D28D9, #4C1D95); transform: translateY(-1px); box-shadow: 0 10px 28px rgba(124,58,237,0.35); }
+
+    /* ==================== PRINT STYLES ==================== */
+    @media print {
+      header, footer, .personas-section, .resume-banner,
+      .action-btn-group, .chat-section, .filter-section,
+      .wizard-progress, #api-warning, .form-hero,
+      #screen-form, #screen-loading { display: none !important; }
+      body { background: white !important; }
+      .container { padding: 0 !important; max-width: 100% !important; }
+      .screen { display: none !important; }
+      #screen-results { display: block !important; }
+      .results-header {
+        background: none !important;
+        color: black !important;
+        box-shadow: none !important;
+        border-bottom: 2px solid #FF9933;
+        border-radius: 0 !important;
+        padding: 16px 0 !important;
+      }
+      .results-header h2, .results-header p { color: black !important; }
+      .results-badge { background: #F3F4F6 !important; color: black !important; border: 1px solid #ccc !important; }
+      .scheme-card { box-shadow: none !important; border: 1px solid #ddd !important; break-inside: avoid; page-break-inside: avoid; }
+      .scheme-details { display: block !important; }
+      .expand-btn { display: none !important; }
+      .print-user-header {
+        display: block !important;
+        font-size: 0.85rem;
+        color: #374151;
+        margin-bottom: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+    }
+    .print-user-header { display: none; }
   </style>
 </head>
 <body>
@@ -1041,7 +1297,14 @@
     </div>
   </div>
   <div class="header-actions">
-    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-btn">हिंदी</button>
+    <div class="lang-pills" id="lang-pills-container">
+      <button class="lang-pill active" onclick="setLanguage('en')" data-lang="en">EN</button>
+      <button class="lang-pill" onclick="setLanguage('hi')" data-lang="hi">हि</button>
+      <button class="lang-pill" onclick="setLanguage('mr')" data-lang="mr">मर</button>
+      <button class="lang-pill" onclick="setLanguage('bn')" data-lang="bn">বাং</button>
+      <button class="lang-pill" onclick="setLanguage('te')" data-lang="te">తె</button>
+      <button class="lang-pill" onclick="setLanguage('ta')" data-lang="ta">த</button>
+    </div>
     <button class="settings-btn" onclick="openSettings()" title="API Settings">⚙️</button>
   </div>
 </header>
@@ -1068,6 +1331,15 @@
 
   <!-- ========== SCREEN 1: PROFILE FORM ========== -->
   <div class="screen active" id="screen-form">
+
+    <!-- Resume Banner (shown by JS if saved session exists) -->
+    <div id="resume-banner" class="resume-banner hidden">
+      <div class="resume-banner-text">📂 You have a saved session. Resume where you left off?</div>
+      <div class="resume-banner-actions">
+        <button class="resume-btn" onclick="resumeSession()">Resume Results →</button>
+        <button class="clear-data-link" onclick="clearSavedData()">Clear saved data</button>
+      </div>
+    </div>
 
     <div class="form-hero">
       <div class="form-hero-icon">🏛️</div>
@@ -1111,131 +1383,170 @@
       </div>
     </div>
 
+    <!-- Wizard Progress Bar -->
+    <div class="wizard-progress" id="wizard-progress">
+      <div class="wizard-step active" id="wstep-1">
+        <div class="wizard-dot">1</div>
+        <div class="wizard-label">Personal</div>
+      </div>
+      <div class="wizard-step" id="wstep-2">
+        <div class="wizard-dot">2</div>
+        <div class="wizard-label">Economic</div>
+      </div>
+      <div class="wizard-step" id="wstep-3">
+        <div class="wizard-dot">3</div>
+        <div class="wizard-label">Family</div>
+      </div>
+    </div>
+
     <form id="profile-form" onsubmit="handleFormSubmit(event)">
 
-      <!-- Personal Info -->
-      <div class="form-card">
-        <h2>👤 <span class="t" data-key="personal">Personal Information</span></h2>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="t" data-key="fullName">Full Name</label>
-            <input type="text" id="f-name" placeholder="Enter your full name" required />
-          </div>
-          <div class="form-grid form-grid-2">
+      <!-- STEP 1: Personal Info -->
+      <div class="form-step active" id="form-step-1">
+        <div class="form-card">
+          <h2>👤 <span class="t" data-key="personal">Personal Information</span></h2>
+          <div class="form-grid">
             <div class="form-group">
-              <label class="t" data-key="age">Age</label>
-              <input type="number" id="f-age" min="1" max="120" placeholder="25" required />
+              <label class="t" data-key="fullName">Full Name</label>
+              <input type="text" id="f-name" placeholder="Enter your full name" />
+            </div>
+            <div class="form-grid form-grid-2">
+              <div class="form-group">
+                <label class="t" data-key="age">Age</label>
+                <input type="number" id="f-age" min="1" max="120" placeholder="25" />
+              </div>
+              <div class="form-group">
+                <label class="t" data-key="gender">Gender</label>
+                <select id="f-gender">
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
             <div class="form-group">
-              <label class="t" data-key="gender">Gender</label>
-              <select id="f-gender" required>
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+              <label class="t" data-key="state">State</label>
+              <select id="f-state">
+                <option value="">Select your state</option>
+                <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+                <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+                <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+                <option>Himachal Pradesh</option><option>Jharkhand</option>
+                <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option>
+                <option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+                <option>Mizoram</option><option>Nagaland</option><option>Odisha</option>
+                <option>Punjab</option><option>Rajasthan</option><option>Sikkim</option>
+                <option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option>
+                <option>Uttar Pradesh</option><option>Uttarakhand</option>
+                <option>West Bengal</option><option>Andaman and Nicobar Islands</option>
+                <option>Chandigarh</option><option>Dadra and Nagar Haveli</option>
+                <option>Daman and Diu</option><option>Delhi</option><option>Lakshadweep</option>
+                <option>Puducherry</option><option>Ladakh</option><option>Jammu and Kashmir</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="t" data-key="language">Language Preference</label>
+              <select id="f-lang-pref">
+                <option value="English">English</option>
+                <option value="Hindi">हिंदी (Hindi)</option>
+                <option value="Marathi">मराठी (Marathi)</option>
+                <option value="Bengali">বাংলা (Bengali)</option>
+                <option value="Telugu">తెలుగు (Telugu)</option>
+                <option value="Tamil">தமிழ் (Tamil)</option>
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="t" data-key="state">State</label>
-            <select id="f-state" required>
-              <option value="">Select your state</option>
-              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
-              <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
-              <option>Goa</option><option>Gujarat</option><option>Haryana</option>
-              <option>Himachal Pradesh</option><option>Jharkhand</option>
-              <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option>
-              <option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
-              <option>Mizoram</option><option>Nagaland</option><option>Odisha</option>
-              <option>Punjab</option><option>Rajasthan</option><option>Sikkim</option>
-              <option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option>
-              <option>Uttar Pradesh</option><option>Uttarakhand</option>
-              <option>West Bengal</option><option>Andaman and Nicobar Islands</option>
-              <option>Chandigarh</option><option>Dadra and Nagar Haveli</option>
-              <option>Daman and Diu</option><option>Delhi</option><option>Lakshadweep</option>
-              <option>Puducherry</option><option>Ladakh</option><option>Jammu and Kashmir</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="maritalStatus">Marital Status</label>
-            <select id="f-marital">
-              <option value="Single">Single</option>
-              <option value="Married">Married</option>
-              <option value="Widowed">Widowed</option>
-              <option value="Divorced">Divorced</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="children">Number of Children</label>
-            <select id="f-children">
-              <option value="0">0</option><option value="1">1</option>
-              <option value="2">2</option><option value="3">3</option>
-              <option value="4">4</option><option value="5">5+</option>
-            </select>
-          </div>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="wizard-next-btn" onclick="wizardNext(1)">Next → Step 2</button>
         </div>
       </div>
 
-      <!-- Economic Info -->
-      <div class="form-card">
-        <h2>💰 <span class="t" data-key="economic">Economic Details</span></h2>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="t" data-key="income">Monthly Household Income (₹)</label>
-            <input type="number" id="f-income" min="0" placeholder="e.g. 15000" required />
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="occupation">Occupation</label>
-            <select id="f-occupation" required>
-              <option value="">Select occupation</option>
-              <option value="Farmer">Farmer</option>
-              <option value="Student">Student</option>
-              <option value="Unemployed">Unemployed</option>
-              <option value="Salaried">Salaried Employee</option>
-              <option value="Self-employed">Self-employed</option>
-              <option value="Daily wage worker">Daily Wage Worker</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="caste">Caste Category</label>
-            <div class="radio-group" id="caste-group">
-              <label class="radio-btn"><input type="radio" name="caste" value="General" onchange="syncRadio('caste-group')" /> General</label>
-              <label class="radio-btn"><input type="radio" name="caste" value="OBC" onchange="syncRadio('caste-group')" /> OBC</label>
-              <label class="radio-btn"><input type="radio" name="caste" value="SC" onchange="syncRadio('caste-group')" /> SC</label>
-              <label class="radio-btn"><input type="radio" name="caste" value="ST" onchange="syncRadio('caste-group')" /> ST</label>
+      <!-- STEP 2: Economic Profile -->
+      <div class="form-step" id="form-step-2">
+        <div class="form-card">
+          <h2>💰 <span class="t" data-key="economic">Economic Details</span></h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="t" data-key="income">Monthly Household Income (₹)</label>
+              <input type="number" id="f-income" min="0" placeholder="e.g. 15000" />
             </div>
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="bpl">Do you have a BPL card?</label>
-            <div class="radio-group" id="bpl-group">
-              <label class="radio-btn"><input type="radio" name="bpl" value="Yes" onchange="syncRadio('bpl-group')" /> Yes</label>
-              <label class="radio-btn"><input type="radio" name="bpl" value="No" onchange="syncRadio('bpl-group')" /> No</label>
+            <div class="form-group">
+              <label class="t" data-key="occupation">Occupation</label>
+              <select id="f-occupation">
+                <option value="">Select occupation</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Student">Student</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Salaried">Salaried Employee</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Daily wage worker">Daily Wage Worker</option>
+              </select>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="t" data-key="land">Do you own agricultural land?</label>
-            <div class="radio-group" id="land-group">
-              <label class="radio-btn"><input type="radio" name="land" value="Yes" onchange="syncRadio('land-group')" /> Yes</label>
-              <label class="radio-btn"><input type="radio" name="land" value="No" onchange="syncRadio('land-group')" /> No</label>
+            <div class="form-group">
+              <label class="t" data-key="bpl">Do you have a BPL card?</label>
+              <div class="radio-group" id="bpl-group">
+                <label class="radio-btn"><input type="radio" name="bpl" value="Yes" onchange="syncRadio('bpl-group')" /> Yes</label>
+                <label class="radio-btn"><input type="radio" name="bpl" value="No" onchange="syncRadio('bpl-group')" /> No</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="t" data-key="land">Do you own agricultural land?</label>
+              <div class="radio-group" id="land-group">
+                <label class="radio-btn"><input type="radio" name="land" value="Yes" onchange="syncRadio('land-group')" /> Yes</label>
+                <label class="radio-btn"><input type="radio" name="land" value="No" onchange="syncRadio('land-group')" /> No</label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Language Preference -->
-      <div class="form-card">
-        <h2>🌐 <span class="t" data-key="language">Language Preference</span></h2>
-        <div class="form-group">
-          <div class="radio-group" id="lang-pref-group">
-            <label class="radio-btn"><input type="radio" name="lang-pref" value="English" checked onchange="syncRadio('lang-pref-group')" /> English</label>
-            <label class="radio-btn"><input type="radio" name="lang-pref" value="Hindi" onchange="syncRadio('lang-pref-group')" /> हिंदी</label>
-          </div>
+        <div class="wizard-nav">
+          <button type="button" class="wizard-back-btn" onclick="wizardBack(2)">← Back</button>
+          <button type="button" class="wizard-next-btn" onclick="wizardNext(2)">Next → Step 3</button>
         </div>
       </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn">
-        <span id="submit-text">Find My Schemes →</span>
-      </button>
+      <!-- STEP 3: Family & Special -->
+      <div class="form-step" id="form-step-3">
+        <div class="form-card">
+          <h2>👨‍👩‍👧 Family &amp; Special Categories</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="t" data-key="caste">Caste Category</label>
+              <div class="radio-group" id="caste-group">
+                <label class="radio-btn"><input type="radio" name="caste" value="General" onchange="syncRadio('caste-group')" /> General</label>
+                <label class="radio-btn"><input type="radio" name="caste" value="OBC" onchange="syncRadio('caste-group')" /> OBC</label>
+                <label class="radio-btn"><input type="radio" name="caste" value="SC" onchange="syncRadio('caste-group')" /> SC</label>
+                <label class="radio-btn"><input type="radio" name="caste" value="ST" onchange="syncRadio('caste-group')" /> ST</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="t" data-key="maritalStatus">Marital Status</label>
+              <select id="f-marital">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Divorced">Divorced</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="t" data-key="children">Number of Children</label>
+              <select id="f-children">
+                <option value="0">0</option><option value="1">1</option>
+                <option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="wizard-back-btn" onclick="wizardBack(3)">← Back</button>
+          <button type="submit" class="wizard-next-btn" id="submit-btn">
+            <span id="submit-text">Find My Schemes →</span>
+          </button>
+        </div>
+      </div>
+
     </form>
   </div>
 
@@ -1266,6 +1577,7 @@
 
   <!-- ========== SCREEN 3: RESULTS ========== -->
   <div class="screen" id="screen-results">
+    <div class="print-user-header" id="print-user-header"></div>
     <div class="results-header">
       <h2 id="results-name">Your Matched Schemes</h2>
       <p id="results-subtitle">Based on your profile, here are the schemes you qualify for</p>
@@ -1293,6 +1605,10 @@
 
     <button class="checklist-btn" id="checklist-btn" onclick="downloadChecklist()">
       📋 <span id="checklist-btn-text">Download My Document Checklist</span>
+    </button>
+
+    <button class="pdf-btn" onclick="downloadPDF()">
+      🖨️ Download PDF / Print Results
     </button>
 
     <button class="submit-btn" style="background: white; color: var(--saffron-dark); border: 2px solid var(--saffron); box-shadow: none; animation: none;" onclick="goBack()">
@@ -1351,7 +1667,10 @@ const SCHEMES = [
     description: "Income support of ₹6,000 per year in three equal installments to small and marginal farmer families.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Register at pmkisan.gov.in or visit local agriculture office / Common Service Centre (CSC). Aadhaar-linked bank account required.",
-    official_link: "https://pmkisan.gov.in"
+    official_link: "https://pmkisan.gov.in",
+    applyUrl: "https://pmkisan.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "KCC",
@@ -1360,7 +1679,10 @@ const SCHEMES = [
     description: "Provides farmers with timely and adequate credit for agricultural needs at concessional interest rates (4% effective rate).",
     eligibility: { min_age: 18, max_age: 75, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Apply at any nationalized bank, cooperative bank, or regional rural bank. Submit land documents, identity proof, and passport-size photograph.",
-    official_link: "https://www.nabard.org/auth/writereaddata/tender/1806180417KCC%20Scheme.pdf"
+    official_link: "https://www.nabard.org/auth/writereaddata/tender/1806180417KCC%20Scheme.pdf",
+    applyUrl: "https://fasalrin.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMFBY",
@@ -1369,7 +1691,10 @@ const SCHEMES = [
     description: "Crop insurance scheme providing financial support to farmers suffering crop loss/damage due to unforeseen events.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Apply through the PMFBY portal (pmfby.gov.in), CSC, banks, or empanelled insurance companies during the crop season.",
-    official_link: "https://pmfby.gov.in"
+    official_link: "https://pmfby.gov.in",
+    applyUrl: "https://pmfby.gov.in",
+    deadline: "Kharif: July 31 · Rabi: Dec 31",
+    states: "all"
   },
   {
     id: "PMKSY",
@@ -1378,7 +1703,10 @@ const SCHEMES = [
     description: "Ensures access to protective irrigation to all agricultural farms with the motto 'Har Khet Ko Pani, More Crop Per Drop'.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Apply through state agriculture department or District Agriculture Officer (DAO). Subsidy available for drip/sprinkler irrigation.",
-    official_link: "https://pmksy.gov.in"
+    official_link: "https://pmksy.gov.in",
+    applyUrl: "https://pmksy.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "e-NAM",
@@ -1387,7 +1715,10 @@ const SCHEMES = [
     description: "Online trading platform for agricultural commodities allowing farmers to get better prices.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Register at enam.gov.in or at the local APMC (Agriculture Produce Market Committee). Aadhaar and bank account required.",
-    official_link: "https://enam.gov.in"
+    official_link: "https://enam.gov.in",
+    applyUrl: "https://www.enam.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "SMAM",
@@ -1396,7 +1727,10 @@ const SCHEMES = [
     description: "Provides subsidy (40-50% for general, 50-80% for SC/ST/small farmers) on purchase of farm machinery and equipment.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Apply at agrimachinery.nic.in portal or state agriculture department. Upload land records and identity documents.",
-    official_link: "https://agrimachinery.nic.in"
+    official_link: "https://agrimachinery.nic.in",
+    applyUrl: "https://agrimachinery.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMKMY",
@@ -1405,7 +1739,10 @@ const SCHEMES = [
     description: "Pension scheme providing ₹3,000/month to small and marginal farmers after age 60.",
     eligibility: { min_age: 18, max_age: 40, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: true, state: "all" },
     how_to_apply: "Enroll at maandhan.in or nearest Common Service Centre (CSC). Contribute ₹55-200/month based on entry age.",
-    official_link: "https://maandhan.in"
+    official_link: "https://maandhan.in",
+    applyUrl: "https://maandhan.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "ATMA",
@@ -1414,7 +1751,10 @@ const SCHEMES = [
     description: "Provides training, demonstrations, and technology transfer to farmers to improve agricultural productivity.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Contact local Block Technology Team (BTT) or District Agricultural Office for registration and training programs.",
-    official_link: "https://agricoop.nic.in"
+    official_link: "https://agricoop.nic.in",
+    applyUrl: "https://atma-dbt.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- WOMEN & CHILDREN (7 schemes) ----
@@ -1425,7 +1765,10 @@ const SCHEMES = [
     description: "Addresses declining Child Sex Ratio (CSR) and promotes welfare and education of the girl child.",
     eligibility: { min_age: 0, max_age: 10, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "No direct application — benefits through Anganwadi centers, schools, and health facilities. Apply for Sukanya Samriddhi at post office/bank.",
-    official_link: "https://wcd.nic.in/bbbp-schemes"
+    official_link: "https://wcd.nic.in/bbbp-schemes",
+    applyUrl: "https://wcd.nic.in/bbbp-schemes",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "SSY",
@@ -1434,7 +1777,10 @@ const SCHEMES = [
     description: "Small deposit savings scheme for girl child with attractive interest rate (~8.2% p.a.) and tax benefits.",
     eligibility: { min_age: 0, max_age: 10, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Open account at post office or authorized bank with girl's birth certificate, parent's Aadhaar/PAN, and minimum ₹250 deposit.",
-    official_link: "https://www.nsiindia.gov.in"
+    official_link: "https://www.nsiindia.gov.in",
+    applyUrl: "https://www.indiapost.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "JSY",
@@ -1443,7 +1789,10 @@ const SCHEMES = [
     description: "Cash assistance to pregnant women for institutional delivery — ₹1,400 (rural) and ₹1,000 (urban) in LPS states.",
     eligibility: { min_age: 18, max_age: 45, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
     how_to_apply: "Register at nearest government health facility (PHC/CHC/hospital). ASHA worker will assist with registration.",
-    official_link: "https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=309"
+    official_link: "https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=309",
+    applyUrl: "https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=841&lid=309",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMMVY",
@@ -1452,7 +1801,10 @@ const SCHEMES = [
     description: "Maternity benefit of ₹5,000 for the first live birth to compensate wage loss and improve nutrition of pregnant/lactating mothers.",
     eligibility: { min_age: 18, max_age: 45, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Register at Anganwadi center or approved health facility within 150 days of pregnancy. Three installments via direct bank transfer.",
-    official_link: "https://pmmvy.nic.in"
+    official_link: "https://pmmvy.nic.in",
+    applyUrl: "https://pmmvy.wcd.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "ICDS",
@@ -1461,7 +1813,10 @@ const SCHEMES = [
     description: "Provides supplementary nutrition, health checkups, immunization, and pre-school education for children 0-6 years.",
     eligibility: { min_age: 0, max_age: 6, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Enroll at nearest Anganwadi center. No formal application required — walk-in registration at your local Anganwadi.",
-    official_link: "https://wcd.nic.in"
+    official_link: "https://wcd.nic.in",
+    applyUrl: "https://icds-wcd.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "NP-NSAF",
@@ -1470,7 +1825,10 @@ const SCHEMES = [
     description: "Day care support for children (6 months to 6 years) of working mothers with supplementary nutrition and early stimulation.",
     eligibility: { min_age: 0, max_age: 6, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 24000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at Women and Child Development Department or NGOs running government-funded creches in your area.",
-    official_link: "https://wcd.nic.in"
+    official_link: "https://wcd.nic.in",
+    applyUrl: "https://wcd.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "KSY-Women",
@@ -1479,7 +1837,10 @@ const SCHEMES = [
     description: "Empowers rural women through community engagement, skill development, employment, digital literacy, and health.",
     eligibility: { min_age: 18, max_age: 60, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Contact Anganwadi worker, Block Resource Centre, or District Women and Child Development Officer.",
-    official_link: "https://wcd.nic.in"
+    official_link: "https://wcd.nic.in",
+    applyUrl: "https://wcd.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- EDUCATION (6 schemes) ----
@@ -1490,7 +1851,10 @@ const SCHEMES = [
     description: "Single-window portal for pre-matric, post-matric, and merit scholarships for SC, ST, OBC, Minority, and economically weaker students.",
     eligibility: { min_age: 3, max_age: 30, gender: "All", caste: ["OBC","SC","ST"], occupation: ["Student"], max_income: 250000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Register at scholarships.gov.in during application window (usually July–October). Upload income certificate, caste certificate, marksheets, bank details.",
-    official_link: "https://scholarships.gov.in"
+    official_link: "https://scholarships.gov.in",
+    applyUrl: "https://scholarships.gov.in",
+    deadline: "Oct 31 (Annual)",
+    states: "all"
   },
   {
     id: "PMSS",
@@ -1499,7 +1863,10 @@ const SCHEMES = [
     description: "Scholarships of ₹2,500/month (boys) and ₹3,000/month (girls) for wards of deceased/disabled ex-servicemen.",
     eligibility: { min_age: 18, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at ksb.gov.in. Documents: Ex-serviceman certificate, marksheets, fee receipts, bank account.",
-    official_link: "https://ksb.gov.in"
+    official_link: "https://ksb.gov.in",
+    applyUrl: "https://ksb.gov.in/pm-scholarship.htm",
+    deadline: "Oct 31 (Annual)",
+    states: "all"
   },
   {
     id: "SB-MHRD",
@@ -1508,7 +1875,10 @@ const SCHEMES = [
     description: "Integrated scheme for school education from pre-school to class XII covering access, equity, and quality improvements.",
     eligibility: { min_age: 3, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Benefits flow through schools automatically. Enroll children in government schools to access textbooks, uniforms, midday meals, and digital labs.",
-    official_link: "https://samagrashiksha.in"
+    official_link: "https://samagrashiksha.in",
+    applyUrl: "https://samagra.moe.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "RTE",
@@ -1517,7 +1887,10 @@ const SCHEMES = [
     description: "25% free seats in private schools for economically weaker sections (EWS) children from class 1 to 8.",
     eligibility: { min_age: 6, max_age: 14, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 100000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply through state RTE portal or District Education Office during admission window (usually March-April). Income certificate required.",
-    official_link: "https://mhrd.gov.in/rte"
+    official_link: "https://mhrd.gov.in/rte",
+    applyUrl: "https://rte.moe.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMSSS",
@@ -1526,7 +1899,10 @@ const SCHEMES = [
     description: "Scholarships for students from North-East states pursuing professional courses in institutions outside their home state.",
     eligibility: { min_age: 17, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 600000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply through AICTE portal. Students from Assam, Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura are eligible.",
-    official_link: "https://www.aicte-india.org"
+    official_link: "https://www.aicte-india.org",
+    applyUrl: "https://scholarships.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "NMMSS",
@@ -1535,7 +1911,10 @@ const SCHEMES = [
     description: "₹12,000 per year scholarship for meritorious students from economically weaker sections to prevent dropout after class 8.",
     eligibility: { min_age: 13, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 150000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Appear for state-level NMMSS examination. Applications through school principal or State Examination Board.",
-    official_link: "https://scholarships.gov.in"
+    official_link: "https://scholarships.gov.in",
+    applyUrl: "https://scholarships.gov.in",
+    deadline: "Nov 30 (Annual)",
+    states: "all"
   },
 
   // ---- HEALTH (6 schemes) ----
@@ -1546,7 +1925,10 @@ const SCHEMES = [
     description: "Health coverage of ₹5 lakh per family per year for secondary and tertiary hospitalization across empanelled hospitals.",
     eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
     how_to_apply: "Check eligibility at mera.pmjay.gov.in using Aadhaar/ration card. Get Golden Card from Ayushman Mitra at government hospitals or CSC.",
-    official_link: "https://pmjay.gov.in"
+    official_link: "https://pmjay.gov.in",
+    applyUrl: "https://pmjay.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMSBY",
@@ -1555,7 +1937,10 @@ const SCHEMES = [
     description: "Accidental insurance cover of ₹2 lakh for death/total disability at just ₹20/year premium.",
     eligibility: { min_age: 18, max_age: 70, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Enroll through your bank account (auto-debit ₹20 annually). Visit bank branch or bank's internet banking/mobile app.",
-    official_link: "https://jansuraksha.gov.in"
+    official_link: "https://jansuraksha.gov.in",
+    applyUrl: "https://jansuraksha.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMJJBY",
@@ -1564,7 +1949,10 @@ const SCHEMES = [
     description: "Life insurance cover of ₹2 lakh for death due to any reason at ₹436/year premium.",
     eligibility: { min_age: 18, max_age: 50, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Enroll via bank branch or online banking. Annual auto-debit of ₹436 from savings account linked to Aadhaar.",
-    official_link: "https://jansuraksha.gov.in"
+    official_link: "https://jansuraksha.gov.in",
+    applyUrl: "https://jansuraksha.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "JSSK",
@@ -1573,7 +1961,10 @@ const SCHEMES = [
     description: "Free delivery including C-section, free drugs, diagnostics, diet, blood, and transport for pregnant women at government facilities.",
     eligibility: { min_age: 15, max_age: 49, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Visit nearest government health facility (PHC/CHC/District Hospital). ASHA worker can accompany for delivery support.",
-    official_link: "https://nhm.gov.in"
+    official_link: "https://nhm.gov.in",
+    applyUrl: "https://nhm.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "RBSK",
@@ -1582,7 +1973,10 @@ const SCHEMES = [
     description: "Child health screening and early intervention services for children from birth to 18 years covering 4D — Defects, Diseases, Deficiencies, Development delays.",
     eligibility: { min_age: 0, max_age: 18, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Screening conducted at schools and Anganwadi centers. DEIC (District Early Intervention Centre) provides follow-up treatment.",
-    official_link: "https://nhm.gov.in/rbsk"
+    official_link: "https://nhm.gov.in/rbsk",
+    applyUrl: "https://rbsk.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMNDP",
@@ -1591,7 +1985,10 @@ const SCHEMES = [
     description: "Free mental health services including counseling, treatment, and rehabilitation through District Mental Health Programme.",
     eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Visit nearest District Hospital mental health OPD. Call national helpline iCall: 9152987821. Tele-MANAS: 14416.",
-    official_link: "https://nhm.gov.in/nmhp"
+    official_link: "https://nhm.gov.in/nmhp",
+    applyUrl: "https://nhm.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- EMPLOYMENT & BUSINESS (7 schemes) ----
@@ -1602,7 +1999,10 @@ const SCHEMES = [
     description: "Guarantees 100 days of wage employment per year to rural households at minimum wage (₹230-374/day depending on state).",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer","Unemployed","Daily wage worker"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply for job card at Gram Panchayat office. Once registered, demand work at the Panchayat. Payment within 15 days.",
-    official_link: "https://nrega.nic.in"
+    official_link: "https://nrega.nic.in",
+    applyUrl: "https://nrega.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "MUDRA",
@@ -1611,7 +2011,10 @@ const SCHEMES = [
     description: "Collateral-free loans up to ₹10 lakh for small businesses: Shishu (₹50K), Kishor (₹5L), Tarun (₹10L).",
     eligibility: { min_age: 18, max_age: 65, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at any bank, MFI, or mudra.org.in. Submit business plan, identity proof, address proof, and photographs.",
-    official_link: "https://www.mudra.org.in"
+    official_link: "https://www.mudra.org.in",
+    applyUrl: "https://mudra.org.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "STARTUP-INDIA",
@@ -1620,7 +2023,10 @@ const SCHEMES = [
     description: "Tax exemptions, funding support, and simplified regulations for DPIIT-recognized startups. 3-year income tax exemption.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Salaried"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Register at startupindia.gov.in. Company/LLP must be less than 10 years old with annual turnover under ₹100 crore.",
-    official_link: "https://startupindia.gov.in"
+    official_link: "https://startupindia.gov.in",
+    applyUrl: "https://www.startupindia.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMEGP",
@@ -1629,7 +2035,10 @@ const SCHEMES = [
     description: "Subsidy of 15-35% on project cost up to ₹50 lakh (manufacturing) for starting new micro enterprises.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at kviconline.gov.in (KVIC) or state KVIBs/DICs. Minimum VIII pass required for projects above ₹10 lakh.",
-    official_link: "https://kviconline.gov.in/pmegpeportal"
+    official_link: "https://kviconline.gov.in/pmegpeportal",
+    applyUrl: "https://www.kviconline.gov.in/pmegpeportal",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "NAPS",
@@ -1638,7 +2047,10 @@ const SCHEMES = [
     description: "Government reimburses 25% of prescribed stipend (max ₹1,500/month) to employers training apprentices to boost skilled employment.",
     eligibility: { min_age: 14, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student","Unemployed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Register at apprenticeshipindia.org and apply for available apprenticeship openings near your location.",
-    official_link: "https://apprenticeshipindia.org"
+    official_link: "https://apprenticeshipindia.org",
+    applyUrl: "https://apprenticeshipindia.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMKVY",
@@ -1647,7 +2059,10 @@ const SCHEMES = [
     description: "Free short-term skill training (3–6 months) in industry-relevant skills with certification and placement support.",
     eligibility: { min_age: 15, max_age: 45, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Unemployed","Student","Daily wage worker"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Find nearest PMKVY training center at skillindia.gov.in or PMKVY portal. Enroll with Aadhaar for free training.",
-    official_link: "https://www.pmkvyofficial.org"
+    official_link: "https://www.pmkvyofficial.org",
+    applyUrl: "https://www.pmkvyofficial.org",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "DAY-NULM",
@@ -1656,7 +2071,10 @@ const SCHEMES = [
     description: "Supports urban poor through self-employment, wage employment, and skill training with subsidized credit linkage.",
     eligibility: { min_age: 18, max_age: 60, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Unemployed","Daily wage worker","Self-employed"], max_income: 50000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at City Livelihood Centre (CLC) or Urban Local Body (Municipal Corporation). Form Self Help Groups through NULM.",
-    official_link: "https://nulm.gov.in"
+    official_link: "https://nulm.gov.in",
+    applyUrl: "https://nulm.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- HOUSING (4 schemes) ----
@@ -1667,7 +2085,10 @@ const SCHEMES = [
     description: "Interest subsidy of 3–6.5% on home loans under Credit Linked Subsidy Scheme (CLSS) for EWS/LIG/MIG categories.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 1800000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply at pmaymis.gov.in or through bank/HFC. Beneficiary must not own a pucca house. Aadhaar mandatory.",
-    official_link: "https://pmaymis.gov.in"
+    official_link: "https://pmaymis.gov.in",
+    applyUrl: "https://pmaymis.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "PMAY-G",
@@ -1676,7 +2097,10 @@ const SCHEMES = [
     description: "Financial assistance of ₹1.20 lakh (plain areas) / ₹1.30 lakh (hilly/NE) for construction of pucca houses to homeless rural poor.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
     how_to_apply: "Selection based on SECC 2011 data. Verify name on awaassoft.nic.in. Contact Gram Panchayat or Block Development Officer.",
-    official_link: "https://pmayg.nic.in"
+    official_link: "https://pmayg.nic.in",
+    applyUrl: "https://pmayg.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "RERA",
@@ -1685,7 +2109,10 @@ const SCHEMES = [
     description: "Protects home buyers from developer fraud with mandatory project registration, timely delivery, and dispute resolution.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "File complaint at state RERA portal (e.g., maharera.mahaonline.gov.in) if builder delays or violates norms. No fee for complaint.",
-    official_link: "https://rera.gov.in"
+    official_link: "https://rera.gov.in",
+    applyUrl: "https://rera.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "NSSF-Housing",
@@ -1694,7 +2121,10 @@ const SCHEMES = [
     description: "5% interest subsidy on home loans up to ₹1 lakh for EWS/LIG urban poor for construction/enhancement of dwelling units.",
     eligibility: { min_age: 18, max_age: 65, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 100000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply through scheduled banks, housing finance companies, or MFIs. Land ownership or allotment letter from ULB required.",
-    official_link: "https://mohua.gov.in"
+    official_link: "https://mohua.gov.in",
+    applyUrl: "https://nhb.org.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- SENIOR CITIZENS & DISABILITY (5 schemes) ----
@@ -1705,7 +2135,10 @@ const SCHEMES = [
     description: "Monthly pension of ₹200 (60-79 years) and ₹500 (80+ years) for BPL senior citizens.",
     eligibility: { min_age: 60, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
     how_to_apply: "Apply at Gram Panchayat (rural) or urban local body office. Submit age proof (Aadhaar/birth certificate), BPL card, bank passbook.",
-    official_link: "https://nsap.nic.in"
+    official_link: "https://nsap.nic.in",
+    applyUrl: "https://nsap.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "IGNWPS",
@@ -1714,7 +2147,10 @@ const SCHEMES = [
     description: "Monthly pension of ₹300 for BPL widows aged 40-79 years.",
     eligibility: { min_age: 40, max_age: 79, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: true, land_owner: false, state: "all" },
     how_to_apply: "Apply at Gram Panchayat or Block Development Office with death certificate of husband, BPL card, age proof, and bank account.",
-    official_link: "https://nsap.nic.in"
+    official_link: "https://nsap.nic.in",
+    applyUrl: "https://nsap.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "ADIP",
@@ -1723,7 +2159,10 @@ const SCHEMES = [
     description: "Free assistive devices (wheelchair, hearing aids, caliper, braille kits) for persons with disability with income below ₹20,000/month.",
     eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 240000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply through ALIMCO camps or District Social Welfare Officer. Disability certificate (40%+ disability) required.",
-    official_link: "https://disabilityaffairs.gov.in/adip"
+    official_link: "https://disabilityaffairs.gov.in/adip",
+    applyUrl: "https://disabilityaffairs.gov.in/adip",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "DISHA",
@@ -1732,7 +2171,10 @@ const SCHEMES = [
     description: "Early intervention, special education, vocational training, and rehabilitation for persons with intellectual disabilities.",
     eligibility: { min_age: 0, max_age: 30, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Contact nearest National Institute under Ministry of Social Justice or Composite Regional Centres (CRCs) in your state.",
-    official_link: "https://disabilityaffairs.gov.in"
+    official_link: "https://disabilityaffairs.gov.in",
+    applyUrl: "https://disabilityaffairs.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "SVAYEM",
@@ -1741,7 +2183,10 @@ const SCHEMES = [
     description: "Soft loans and margin money grants for self-employment projects for persons with 40%+ disability at 5% interest rate.",
     eligibility: { min_age: 18, max_age: 55, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Self-employed","Unemployed"], max_income: 120000, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Apply through National Handicapped Finance and Development Corporation (NHFDC) via state channelising agencies.",
-    official_link: "https://nhfdc.nic.in"
+    official_link: "https://nhfdc.nic.in",
+    applyUrl: "https://nhfdc.nic.in",
+    deadline: "Ongoing",
+    states: "all"
   },
 
   // ---- GENERAL / FINANCIAL INCLUSION (3 schemes) ----
@@ -1752,7 +2197,10 @@ const SCHEMES = [
     description: "Zero balance bank account with RuPay debit card, ₹2 lakh accident insurance, ₹30,000 life insurance, and overdraft facility.",
     eligibility: { min_age: 10, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Visit any bank branch or business correspondent with Aadhaar card. Account opens same day with zero balance.",
-    official_link: "https://pmjdy.gov.in"
+    official_link: "https://pmjdy.gov.in",
+    applyUrl: "https://pmjdy.gov.in",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "APY",
@@ -1761,7 +2209,10 @@ const SCHEMES = [
     description: "Guaranteed pension of ₹1,000–5,000/month after age 60 for unorganized sector workers with government co-contribution.",
     eligibility: { min_age: 18, max_age: 40, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Farmer","Unemployed","Daily wage worker","Self-employed"], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Enroll at bank branch or mobile banking app. Monthly contribution ₹42–1,454 based on chosen pension amount and age.",
-    official_link: "https://www.jansuraksha.gov.in/APY.aspx"
+    official_link: "https://www.jansuraksha.gov.in/APY.aspx",
+    applyUrl: "https://npscra.nsdl.co.in/scheme-details.php",
+    deadline: "Ongoing",
+    states: "all"
   },
   {
     id: "DBT",
@@ -1770,7 +2221,72 @@ const SCHEMES = [
     description: "Enables citizens to receive benefits of 300+ government schemes directly in their Aadhaar-linked bank accounts.",
     eligibility: { min_age: 18, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "all" },
     how_to_apply: "Link Aadhaar to bank account at bank branch or through UIDAI portal. Verify seeding at uidai.gov.in/verify-aadhaar.",
-    official_link: "https://dbtbharat.gov.in"
+    official_link: "https://dbtbharat.gov.in",
+    applyUrl: "https://dbtbharat.gov.in",
+    deadline: "Ongoing",
+    states: "all"
+  },
+
+  // ---- STATE-SPECIFIC SCHEMES (5 schemes) ----
+  {
+    id: "MJPJAY",
+    name: "Mahatma Jyotirao Phule Jan Arogya Yojana",
+    category: "Health",
+    description: "Health insurance up to ₹5 lakh per year for BPL and above-poverty-line families in Maharashtra for 1,000+ procedures.",
+    eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "Maharashtra" },
+    how_to_apply: "Apply at any empanelled government or private hospital in Maharashtra. Aadhaar, ration card, and yellow/orange card required.",
+    official_link: "https://www.jeevandayee.gov.in",
+    applyUrl: "https://www.jeevandayee.gov.in",
+    deadline: "Ongoing",
+    states: ["Maharashtra"]
+  },
+  {
+    id: "CM-BREAKFAST",
+    name: "Chief Minister's Breakfast Scheme",
+    category: "Education",
+    description: "Free nutritious breakfast for government school children in Tamil Nadu to improve attendance and nutrition levels.",
+    eligibility: { min_age: 5, max_age: 14, gender: "All", caste: ["General","OBC","SC","ST"], occupation: ["Student"], max_income: 999999, bpl_required: false, land_owner: false, state: "Tamil Nadu" },
+    how_to_apply: "Automatically available to all government school students in Tamil Nadu. Enroll child in a government primary school.",
+    official_link: "https://www.tn.gov.in",
+    applyUrl: "https://www.tn.gov.in",
+    deadline: "Ongoing",
+    states: ["Tamil Nadu"]
+  },
+  {
+    id: "KSY-UP",
+    name: "Kanya Sumangala Yojana",
+    category: "Women & Children",
+    description: "Financial assistance of ₹15,000 in 6 installments for girl child welfare in Uttar Pradesh from birth to graduation.",
+    eligibility: { min_age: 0, max_age: 22, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 300000, bpl_required: false, land_owner: false, state: "Uttar Pradesh" },
+    how_to_apply: "Apply online at mksy.up.gov.in or at the nearest Development Block or District Probation Officer's office.",
+    official_link: "https://mksy.up.gov.in",
+    applyUrl: "https://mksy.up.gov.in",
+    deadline: "Ongoing",
+    states: ["Uttar Pradesh"]
+  },
+  {
+    id: "CHIRANJEEVI",
+    name: "Chiranjeevi Health Insurance Scheme",
+    category: "Health",
+    description: "Cashless health insurance up to ₹25 lakh per year for all families in Rajasthan covering 1,576 packages.",
+    eligibility: { min_age: 0, max_age: 99, gender: "All", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "Rajasthan" },
+    how_to_apply: "Register at chiranjeevi.rajasthan.gov.in or at any empanelled hospital in Rajasthan with Aadhaar/Jan Aadhaar card.",
+    official_link: "https://chiranjeevi.rajasthan.gov.in",
+    applyUrl: "https://chiranjeevi.rajasthan.gov.in",
+    deadline: "Ongoing",
+    states: ["Rajasthan"]
+  },
+  {
+    id: "LAKSHMIR-BHANDAR",
+    name: "Lakshmir Bhandar",
+    category: "Women & Children",
+    description: "Monthly financial support of ₹500 (general) and ₹1,000 (SC/ST) to women head of household in West Bengal.",
+    eligibility: { min_age: 25, max_age: 60, gender: "Female", caste: ["General","OBC","SC","ST"], occupation: [], max_income: 999999, bpl_required: false, land_owner: false, state: "West Bengal" },
+    how_to_apply: "Apply through Duare Sarkar camps or Gram Panchayat/Municipal Ward offices in West Bengal with Aadhaar and bank account.",
+    official_link: "https://wb.gov.in",
+    applyUrl: "https://wb.gov.in",
+    deadline: "Ongoing",
+    states: ["West Bengal"]
   }
 ];
 
@@ -1867,6 +2383,74 @@ const TRANSLATIONS = {
     "chat-header-text": "💬 अपनी योजनाओं के बारे में पूछें",
     "chat-send-text": "भेजें",
     "impact-counter": "{n} भारतीयों से जुड़ें जिन्होंने अपने लाभ पाए",
+  },
+  mr: {
+    "header-title": "Scheme Sathi",
+    "header-subtitle": "सरकारी योजना मार्गदर्शक",
+    "hero-title": "तुमच्यासाठी योजना शोधा",
+    "hero-desc": "तुमची माहिती भरा आणि AI तुम्हाला पात्र सरकारी योजना शोधेल",
+    "submit-text": "माझ्या योजना शोधा →",
+    "loading-title": "AI विश्लेषण करत आहे...",
+    "loading-subtitle": "तुमच्या प्रोफाइलनुसार योजना शोधत आहे",
+    "results-subtitle": "तुमच्यासाठी योजना सापडल्या",
+    "langBtn": "भाषा",
+    "step-1-text": "प्रोफाइल वर्गीकरण",
+    "step-2-text": "योजना जुळवणी",
+    "step-3-text": "कृती योजना",
+    "try-demo-label": "✨ डेमो वापरा",
+    "modal-desc": "AI-चालित योजना जुळवणी सक्षम करण्यासाठी ASI-1 API key टाका",
+    "api-warning-text": "कोणतीही API key सापडली नाही. ⚙️ बटणाने ASI-1 API key जोडा"
+  },
+  bn: {
+    "header-title": "Scheme Sathi",
+    "header-subtitle": "সরকারি প্রকল্প গাইড",
+    "hero-title": "আপনার জন্য প্রকল্প খুঁজুন",
+    "hero-desc": "আপনার তথ্য দিন এবং AI আপনার যোগ্য সরকারি প্রকল্প খুঁজে দেবে",
+    "submit-text": "আমার প্রকল্প খুঁজুন →",
+    "loading-title": "AI বিশ্লেষণ করছে...",
+    "loading-subtitle": "আপনার প্রোফাইল অনুযায়ী প্রকল্প খোঁজা হচ্ছে",
+    "results-subtitle": "আপনার জন্য প্রকল্প পাওয়া গেছে",
+    "langBtn": "ভাষা",
+    "step-1-text": "প্রোফাইল বিশ্লেষণ",
+    "step-2-text": "প্রকল্প মিলানো",
+    "step-3-text": "কর্ম পরিকল্পনা",
+    "try-demo-label": "✨ ডেমো ব্যবহার করুন",
+    "modal-desc": "AI-চালিত প্রকল্প মিলানো সক্ষম করতে ASI-1 API key দিন",
+    "api-warning-text": "কোনো API key পাওয়া যায়নি। ⚙️ বাটনে ASI-1 API key যোগ করুন"
+  },
+  ta: {
+    "header-title": "Scheme Sathi",
+    "header-subtitle": "அரசு திட்ட வழிகாட்டி",
+    "hero-title": "உங்களுக்கான திட்டங்களை கண்டறியுங்கள்",
+    "hero-desc": "உங்கள் தகவலை பதிவிடுங்கள், AI உங்களுக்கு தகுந்த அரசு திட்டங்களை கண்டறியும்",
+    "submit-text": "என் திட்டங்களை கண்டறி →",
+    "loading-title": "AI பகுப்பாய்வு செய்கிறது...",
+    "loading-subtitle": "உங்கள் சுயவிவரத்திற்கு ஏற்ப திட்டங்கள் தேடப்படுகின்றன",
+    "results-subtitle": "உங்களுக்கான திட்டங்கள் கண்டறியப்பட்டன",
+    "langBtn": "மொழி",
+    "step-1-text": "சுயவிவர வகைப்பாடு",
+    "step-2-text": "திட்ட பொருத்தம்",
+    "step-3-text": "செயல் திட்டம்",
+    "try-demo-label": "✨ டெமோ முயற்சி",
+    "modal-desc": "AI-இயக்கப்படும் திட்ட பொருத்தத்தை இயக்க ASI-1 API key உள்ளிடவும்",
+    "api-warning-text": "API key கிடைக்கவில்லை. ⚙️ பொத்தானில் ASI-1 API key சேர்க்கவும்"
+  },
+  te: {
+    "header-title": "Scheme Sathi",
+    "header-subtitle": "ప్రభుత్వ పథకాల గైడ్",
+    "hero-title": "మీకు పథకాలు కనుగొనండి",
+    "hero-desc": "మీ వివరాలు నమోదు చేయండి, AI మీకు అర్హమైన ప్రభుత్వ పథకాలు కనుగొంటుంది",
+    "submit-text": "నా పథకాలు కనుగొనండి →",
+    "loading-title": "AI విశ్లేషిస్తోంది...",
+    "loading-subtitle": "మీ ప్రొఫైల్ ఆధారంగా పథకాలు వెతుకుతోంది",
+    "results-subtitle": "మీకు పథకాలు దొరికాయి",
+    "langBtn": "భాష",
+    "step-1-text": "ప్రొఫైల్ వర్గీకరణ",
+    "step-2-text": "పథకాల సరిపోలిక",
+    "step-3-text": "చర్య ప్రణాళిక",
+    "try-demo-label": "✨ డెమో ప్రయత్నించు",
+    "modal-desc": "AI-ఆధారిత పథకాల సరిపోలికను ప్రారంభించడానికి ASI-1 API key నమోదు చేయండి",
+    "api-warning-text": "API key కనుగొనబడలేదు. ⚙️ బటన్ ద్వారా ASI-1 API key జోడించండి"
   }
 };
 
@@ -1893,12 +2477,16 @@ function applyTranslations() {
     const key = el.getAttribute("data-key");
     el.textContent = t(key);
   });
-  document.getElementById("lang-btn").textContent = t("langBtn");
+  // Update lang pills active state
+  document.querySelectorAll(".lang-pill[data-lang]").forEach(pill => {
+    pill.classList.toggle("active", pill.getAttribute("data-lang") === currentLang);
+  });
   document.getElementById("header-title").textContent = t("header-title");
   document.getElementById("header-subtitle").textContent = t("header-subtitle");
   document.getElementById("hero-title").textContent = t("hero-title");
   document.getElementById("hero-desc").textContent = t("hero-desc");
-  document.getElementById("submit-text").textContent = t("submit-text");
+  const submitText = document.getElementById("submit-text");
+  if (submitText) submitText.textContent = t("submit-text");
   document.getElementById("modal-desc").textContent = t("modal-desc");
   document.getElementById("api-warning-text").textContent = t("api-warning-text");
   const lt = document.getElementById("loading-title");
@@ -1909,18 +2497,17 @@ function applyTranslations() {
     const el = document.getElementById(id);
     if (el) el.textContent = t(id);
   });
+  const demoLabel = document.getElementById("try-demo-label");
+  if (demoLabel) demoLabel.textContent = t("try-demo-label");
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  applyTranslations();
 }
 
 function toggleLanguage() {
   currentLang = currentLang === "en" ? "hi" : "en";
-  // Sync radio button for lang-pref
-  const radios = document.querySelectorAll('input[name="lang-pref"]');
-  radios.forEach(r => {
-    if ((currentLang === "hi" && r.value === "Hindi") || (currentLang === "en" && r.value === "English")) {
-      r.checked = true;
-    }
-  });
-  syncRadio("lang-pref-group");
   applyTranslations();
 }
 
@@ -1944,6 +2531,120 @@ function setStepState(num, state) {
   const icons = ["🔍","📋","📝"];
   const doneIcons = ["✅","✅","✅"];
   icon.textContent = state === "done" ? doneIcons[num-1] : (state === "active" ? "⏳" : icons[num-1]);
+}
+
+/* ============================================================
+   SECTION 4b: WIZARD FORM NAVIGATION
+   ============================================================ */
+let currentWizardStep = 1;
+
+function wizardNext(step) {
+  // Validate current step fields
+  if (step === 1) {
+    const name = document.getElementById("f-name").value.trim();
+    const age = document.getElementById("f-age").value;
+    const gender = document.getElementById("f-gender").value;
+    const state = document.getElementById("f-state").value;
+    if (!name || !age || !gender || !state) {
+      alert("Please fill in all fields: Name, Age, Gender, and State.");
+      return;
+    }
+  } else if (step === 2) {
+    const income = document.getElementById("f-income").value;
+    const occupation = document.getElementById("f-occupation").value;
+    if (!income || !occupation) {
+      alert("Please fill in Monthly Income and Occupation.");
+      return;
+    }
+  }
+  goToWizardStep(step + 1);
+}
+
+function wizardBack(step) {
+  goToWizardStep(step - 1);
+}
+
+function goToWizardStep(step) {
+  // Hide all steps
+  document.querySelectorAll(".form-step").forEach(s => s.classList.remove("active"));
+  document.getElementById(`form-step-${step}`).classList.add("active");
+  currentWizardStep = step;
+
+  // Update wizard dots
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById(`wstep-${i}`);
+    if (!dot) continue;
+    dot.className = "wizard-step";
+    if (i < step) dot.classList.add("done");
+    else if (i === step) dot.classList.add("active");
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============================================================
+   SECTION 4c: LOCAL STORAGE — SESSION SAVE / RESUME
+   ============================================================ */
+const SESSION_KEY = "scheme_sathi_session";
+
+function saveSession() {
+  try {
+    const data = {
+      userProfile,
+      matchedSchemes,
+      actionPlan,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn("Could not save session:", e);
+  }
+}
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+function resumeSession() {
+  const session = loadSession();
+  if (!session) return;
+  userProfile = session.userProfile;
+  matchedSchemes = session.matchedSchemes;
+  actionPlan = session.actionPlan;
+  renderResults(null);
+}
+
+function clearSavedData() {
+  localStorage.removeItem(SESSION_KEY);
+  document.getElementById("resume-banner").classList.add("hidden");
+}
+
+function checkForSavedSession() {
+  const session = loadSession();
+  if (session && session.userProfile) {
+    const banner = document.getElementById("resume-banner");
+    if (banner) banner.classList.remove("hidden");
+  }
+}
+
+/* ============================================================
+   SECTION 4d: PDF / PRINT
+   ============================================================ */
+function downloadPDF() {
+  if (userProfile) {
+    const now = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+    const header = document.getElementById("print-user-header");
+    if (header) {
+      header.textContent = `Scheme Sathi Results — ${userProfile.name} · ${userProfile.state} · Generated on ${now}`;
+    }
+  }
+  window.print();
 }
 
 /* ============================================================
@@ -1982,6 +2683,7 @@ function handleFormSubmit(e) {
     openSettings();
     return;
   }
+  const langPref = document.getElementById("f-lang-pref") ? document.getElementById("f-lang-pref").value : (getRadioValue("lang-pref") || "English");
   userProfile = {
     name: document.getElementById("f-name").value.trim(),
     age: parseInt(document.getElementById("f-age").value),
@@ -1994,9 +2696,13 @@ function handleFormSubmit(e) {
     owns_land: getRadioValue("land") || "No",
     marital_status: document.getElementById("f-marital").value,
     num_children: parseInt(document.getElementById("f-children").value),
-    language_preference: getRadioValue("lang-pref") || "English"
+    language_preference: langPref
   };
   if (userProfile.language_preference === "Hindi") currentLang = "hi";
+  else if (userProfile.language_preference === "Marathi") currentLang = "mr";
+  else if (userProfile.language_preference === "Bengali") currentLang = "bn";
+  else if (userProfile.language_preference === "Tamil") currentLang = "ta";
+  else if (userProfile.language_preference === "Telugu") currentLang = "te";
   // Increment the impact counter in localStorage
   incrementCounter();
   runSchemeMatcher();
@@ -2154,6 +2860,9 @@ Return ONLY valid JSON.`;
   matchedSchemes = schemeMatches.length > 0 ? schemeMatches : [];
   actionPlan = plan;
 
+  // Save session to localStorage for resume functionality
+  if (!apiError) saveSession();
+
   setTimeout(() => renderResults(apiError), 600);
 }
 
@@ -2229,10 +2938,15 @@ function renderActionPlan() {
 }
 
 function renderFilters() {
-  const categories = ["all", "High Priority", ...new Set(SCHEMES.map(s => s.category))];
+  const categories = ["all", "High Priority", "State Schemes", ...new Set(SCHEMES.map(s => s.category))];
   const container = document.getElementById("filter-chips");
+  const userState = userProfile ? userProfile.state : "";
   container.innerHTML = categories.map(cat => {
-    const label = cat === "all" ? t("filter-all") : (cat === "High Priority" ? t("filter-high") : cat);
+    let label;
+    if (cat === "all") label = t("filter-all");
+    else if (cat === "High Priority") label = t("filter-high");
+    else if (cat === "State Schemes") label = userState ? `📍 ${userState} Schemes` : "State Schemes";
+    else label = cat;
     return `<button class="filter-chip ${cat === "all" ? "active" : ""}" onclick="applyFilter('${cat}', this)">${label}</button>`;
   }).join("");
 }
@@ -2246,6 +2960,7 @@ function applyFilter(filter, btn) {
 
 function renderSchemeCards(filter) {
   const container = document.getElementById("scheme-cards-container");
+  const userState = userProfile ? userProfile.state : "";
 
   // Merge matched scheme AI data with scheme static data
   let cards = matchedSchemes.map(match => {
@@ -2267,6 +2982,15 @@ function renderSchemeCards(filter) {
     }));
   }
 
+  // State filtering: only show schemes where states === "all" OR states includes user's state
+  cards = cards.filter(card => {
+    const schemeStatic = SCHEMES.find(s => s.id === (card.scheme_id || card.id)) || card;
+    const states = schemeStatic.states || card.states || "all";
+    if (states === "all") return true;
+    if (Array.isArray(states)) return states.includes(userState) || userState === "";
+    return true;
+  });
+
   // Sort by priority
   const pOrder = {HIGH:0, MEDIUM:1, LOW:2};
   cards.sort((a,b) => (pOrder[a.priority]||2) - (pOrder[b.priority]||2) || b.confidence_score - a.confidence_score);
@@ -2275,6 +2999,12 @@ function renderSchemeCards(filter) {
   let filtered = cards;
   if (filter === "High Priority") {
     filtered = cards.filter(c => c.priority === "HIGH");
+  } else if (filter === "State Schemes") {
+    filtered = cards.filter(c => {
+      const schemeStatic = SCHEMES.find(s => s.id === (c.scheme_id || c.id)) || c;
+      const states = schemeStatic.states || c.states || "all";
+      return Array.isArray(states);
+    });
   } else if (filter !== "all") {
     filtered = cards.filter(c => c.category === filter);
   }
@@ -2300,6 +3030,26 @@ function renderSchemeCards(filter) {
       LOW: currentLang === "hi" ? "कम" : "Low"
     }[card.priority || "MEDIUM"];
 
+    // Deadline badge
+    const schemeStatic = SCHEMES.find(s => s.id === (card.scheme_id || card.id)) || card;
+    const deadline = schemeStatic.deadline || card.deadline || "Ongoing";
+    const deadlineBadge = deadline === "Ongoing"
+      ? `<span class="deadline-badge deadline-ongoing">✓ Ongoing</span>`
+      : `<span class="deadline-badge deadline-urgent">⏰ Deadline: ${deadline}</span>`;
+
+    // State scheme badge
+    const states = schemeStatic.states || card.states || "all";
+    const isStateScheme = Array.isArray(states);
+    const stateBadge = isStateScheme
+      ? `<span class="state-scheme-badge">📍 ${states[0]} Scheme</span>`
+      : "";
+
+    // Apply now button
+    const applyUrl = schemeStatic.applyUrl || card.applyUrl || card.official_link || "";
+    const applyNowBtn = applyUrl
+      ? `<a class="apply-now-btn" href="${applyUrl}" target="_blank" rel="noopener noreferrer">Apply Now →</a>`
+      : "";
+
     return `
       <div class="scheme-card" id="card-${idx}">
         <div class="scheme-card-header">
@@ -2310,12 +3060,15 @@ function renderSchemeCards(filter) {
           <div class="scheme-badges">
             <span class="category-badge">${card.category || "General"}</span>
             <span class="eligibility-badge ${eligClass}">${eligLabel}</span>
+            ${deadlineBadge}
+            ${stateBadge}
           </div>
           <div class="scheme-reason">${card.reason_qualified || card.description || ""}</div>
           <div class="confidence-bar">
             <div class="confidence-fill" style="width: ${card.confidence_score || 50}%"></div>
           </div>
           ${card.estimated_benefit ? `<div class="scheme-benefit">💰 ${card.estimated_benefit}</div>` : ""}
+          ${applyNowBtn}
         </div>
         <button class="expand-btn" onclick="toggleDetails(${idx}, this)">
           ${t("how-to-apply")} <span class="expand-chevron">▼</span>
@@ -2843,11 +3596,20 @@ function fillPersona(key) {
   // Sync all radio groups visually
   ["caste-group","bpl-group","land-group","lang-pref-group"].forEach(syncRadio);
 
+  // Set language preference dropdown
+  const langPrefEl = document.getElementById("f-lang-pref");
+  if (langPrefEl && p.lang) {
+    langPrefEl.value = p.lang;
+  }
+
   // Flash effect to signal auto-fill worked
   const form = document.getElementById("profile-form");
   form.style.transition = "opacity 0.15s";
   form.style.opacity = "0.4";
   setTimeout(() => { form.style.opacity = "1"; }, 200);
+
+  // Jump to step 3 so user can submit directly
+  goToWizardStep(3);
 
   // Scroll to form
   form.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -3007,15 +3769,18 @@ async function sendChatMessage() {
    ============================================================ */
 function init() {
   applyTranslations();
-  ["caste-group","bpl-group","land-group","lang-pref-group"].forEach(syncRadio);
+  ["caste-group","bpl-group","land-group"].forEach(syncRadio);
   if (!apiKey) {
     document.getElementById("api-warning").classList.remove("hidden");
   }
   // Load impact counter from localStorage (seeds at 127)
   renderCounter();
-  // Apply language to persona label
-  const demoLabel = document.getElementById("try-demo-label");
-  if (demoLabel) demoLabel.textContent = t("try-demo-label");
+  // Check for saved session and show resume banner if found
+  checkForSavedSession();
+  // Register service worker for PWA / offline support
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);
